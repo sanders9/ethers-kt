@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import io.ethers.abi.AbiType
 import io.ethers.abi.ContractStruct
+import io.ethers.bigint.BigInt
 import io.ethers.core.FastHex
 import io.ethers.core.forEachObjectField
 import io.ethers.core.readAddress
@@ -18,14 +19,13 @@ import io.ethers.core.readBytes
 import io.ethers.core.readOrNull
 import io.ethers.core.types.Address
 import io.ethers.core.types.Bytes
-import java.math.BigInteger
 
 @JsonSerialize(using = EIP712DomainSerializer::class)
 @JsonDeserialize(using = EIP712DomainDeserializer::class)
 data class EIP712Domain(
     val name: String? = null,
     val version: String? = null,
-    val chainId: BigInteger? = null,
+    val chainId: BigInt? = null,
     val verifyingContract: Address? = null,
     val salt: Bytes? = null,
 ) : ContractStruct {
@@ -48,7 +48,7 @@ data class EIP712Domain(
             EIP712Domain(
                 name = if (this.name != null) data[index++] as String else null,
                 version = if (this.version != null) data[index++] as String else null,
-                chainId = if (this.chainId != null) data[index++] as BigInteger else null,
+                chainId = if (this.chainId != null) data[index++] as BigInt else null,
                 verifyingContract = if (this.verifyingContract != null) data[index++] as Address else null,
                 salt = if (this.salt != null) data[index++] as Bytes else null,
             )
@@ -83,7 +83,7 @@ private class EIP712DomainDeserializer : JsonDeserializer<EIP712Domain>() {
 
         var name: String? = null
         var version: String? = null
-        var chainId: BigInteger? = null
+        var chainId: BigInt? = null
         var verifyingContract: Address? = null
         var salt: Bytes? = null
 
@@ -91,7 +91,7 @@ private class EIP712DomainDeserializer : JsonDeserializer<EIP712Domain>() {
             when (field) {
                 "name" -> name = p.readOrNull { text }
                 "version" -> version = p.readOrNull { text }
-                "chainId" -> chainId = p.readOrNull { BigInteger(p.text) }
+                "chainId" -> chainId = p.readOrNull { BigInt(p.text) }
                 "verifyingContract" -> verifyingContract = p.readOrNull { readAddress() }
                 "salt" -> salt = p.readOrNull { readBytes() }
                 else -> p.skipChildren()

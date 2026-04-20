@@ -4,10 +4,11 @@ import com.ditchoom.buffer.BufferFactory
 import com.ditchoom.buffer.Default
 import com.ditchoom.buffer.PlatformBuffer
 import io.ethers.abi.AbiCodec.WORD_SIZE_BYTES
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.FastHex
 import io.ethers.core.types.Address
 import io.ethers.core.types.Bytes
-import java.math.BigInteger
 
 object AbiCodec {
     private val TWOS_COMPLEMENT_PADDING = (0..<32).map { ByteArray(it) { 0xff.toByte() } }.toTypedArray()
@@ -239,7 +240,7 @@ object AbiCodec {
             }
 
             is AbiType.Int -> {
-                val v = data as BigInteger
+                val v = data as BigInt
                 if (v.bitLength() > type.bitSize - 1) {
                     throw AbiCodecException("Provided INT value has more than ${type.bitSize - 1} bits: ${v.bitLength()}")
                 }
@@ -253,7 +254,7 @@ object AbiCodec {
                     return
                 }
 
-                // TODO this could be optimized by accessing the underlying array directly (e.g. method handle to BigInteger#getInt(index))
+                // TODO this could be optimized by accessing the underlying array directly (e.g. method handle to BigInt#getInt(index))
                 //      and writing directly to buff. This would avoid the intermediate array allocation and copy.
                 val arr = v.toByteArray()
                 if (arr.size == 33 && arr[0].toInt() == 0) {
@@ -265,7 +266,7 @@ object AbiCodec {
             }
 
             is AbiType.UInt -> {
-                val v = data as BigInteger
+                val v = data as BigInt
                 if (v.signum() == -1) {
                     throw AbiCodecException("Expected UINT, got INT: $v")
                 }
@@ -274,7 +275,7 @@ object AbiCodec {
                     throw AbiCodecException("Provided UINT value has more than ${type.bitSize} bits: ${v.bitLength()}")
                 }
 
-                // TODO this could be optimized by accessing the underlying array directly (e.g. method handle to BigInteger#getInt(index))
+                // TODO this could be optimized by accessing the underlying array directly (e.g. method handle to BigInt#getInt(index))
                 //      and writing directly to buff. This would avoid the intermediate array allocation and copy.
                 val arr = v.toByteArray()
                 if (arr.size > 33 || (arr.size == 33 && arr[0].toInt() != 0)) {
@@ -629,7 +630,7 @@ object AbiCodec {
             is AbiType.Int -> {
                 buff.ensureRemaining(WORD_SIZE_BYTES)
 
-                val ret = BigInteger(rawData, buff.position(), 32)
+                val ret = BigInts.fromSignedBytes(rawData, buff.position(), 32)
                 buff.skip(32)
                 return ret
             }
@@ -637,7 +638,7 @@ object AbiCodec {
             is AbiType.UInt -> {
                 buff.ensureRemaining(WORD_SIZE_BYTES)
 
-                val ret = BigInteger(1, rawData, buff.position(), 32)
+                val ret = BigInts.fromUnsignedBytes(rawData, buff.position(), 32)
                 buff.skip(32)
                 return ret
             }
@@ -873,12 +874,12 @@ object AbiCodec {
             }
 
             is AbiType.Int -> {
-                val v = data as BigInteger
+                val v = data as BigInt
                 if (v.bitLength() > type.bitSize - 1) {
                     throw AbiCodecException("Provided INT value has more than ${type.bitSize - 1} bits: ${v.bitLength()}")
                 }
 
-                // TODO this could be optimized by accessing the underlying array directly (e.g. method handle to BigInteger#getInt(index))
+                // TODO this could be optimized by accessing the underlying array directly (e.g. method handle to BigInt#getInt(index))
                 //      and writing directly to buff. This would avoid the intermediate array allocation and copy.
                 val arr = v.toByteArray()
 
@@ -905,7 +906,7 @@ object AbiCodec {
             }
 
             is AbiType.UInt -> {
-                val v = data as BigInteger
+                val v = data as BigInt
                 if (v.signum() == -1) {
                     throw AbiCodecException("Expected UINT, got INT: $v")
                 }
@@ -914,7 +915,7 @@ object AbiCodec {
                     throw AbiCodecException("Provided UINT value has more than ${type.bitSize} bits: ${v.bitLength()}")
                 }
 
-                // TODO this could be optimized by accessing the underlying array directly (e.g. method handle to BigInteger#getInt(index))
+                // TODO this could be optimized by accessing the underlying array directly (e.g. method handle to BigInt#getInt(index))
                 //      and writing directly to buff. This would avoid the intermediate array allocation and copy.
                 val arr = v.toByteArray()
                 if (arr.size > 33 || (arr.size == 33 && arr[0].toInt() != 0)) {

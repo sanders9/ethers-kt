@@ -3,10 +3,11 @@ package io.ethers.abi.error
 import io.ethers.abi.AbiCodec
 import io.ethers.abi.AbiFunction
 import io.ethers.abi.AbiType
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.toBigInt
 import io.ethers.core.Result
 import io.ethers.core.types.Bytes
 import io.ethers.providers.RpcError
-import java.math.BigInteger
 
 /**
  * Error returned from a contract call.
@@ -96,7 +97,7 @@ data class PanicError(val kind: Kind) : ContractError() {
         INVALID_INTERNAL_FUNCTION(0x51),
         ;
 
-        val code = code.toBigInteger()
+        val code = code.toBigInt()
     }
 
     companion object {
@@ -114,7 +115,7 @@ data class PanicError(val kind: Kind) : ContractError() {
             if (!data.startsWith(FUNCTION.selector)) return null
 
             val decoded = AbiCodec.decodeWithPrefix(FUNCTION.selector.size, FUNCTION.inputs, data.asByteArray())
-            val errorCode = decoded[0] as BigInteger
+            val errorCode = decoded[0] as BigInt
 
             for (i in Kind.entries.indices) {
                 val kind = Kind.entries[i]

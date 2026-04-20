@@ -5,10 +5,10 @@ import com.ditchoom.buffer.Default
 import io.ethers.abi.AbiCodec
 import io.ethers.abi.AbiType
 import io.ethers.abi.ContractStruct
+import io.ethers.bigint.BigInt
 import io.ethers.core.types.Address
 import io.ethers.core.types.Bytes
 import io.ethers.crypto.Hashing
-import java.math.BigInteger
 
 object EIP712Codec {
     /**
@@ -379,7 +379,7 @@ object EIP712Codec {
             AbiType.String -> value as String
             is AbiType.Int,
             is AbiType.UInt,
-            -> BigInteger(value as String)
+            -> BigInt(value as String)
             else -> throw IllegalArgumentException("Invalid type $fieldType: '$value'")
         }
 

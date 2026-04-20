@@ -4,6 +4,7 @@ import io.ethers.abi.error.ContractError
 import io.ethers.abi.error.ContractRpcError
 import io.ethers.abi.error.ExecutionRevertedError
 import io.ethers.abi.error.RevertError
+import io.ethers.bigint.BigInt
 import io.ethers.core.FastHex
 import io.ethers.core.types.AccessList
 import io.ethers.core.types.Address
@@ -23,7 +24,6 @@ import io.ethers.providers.types.PendingInclusion
 import io.ethers.providers.types.PendingTransaction
 import io.ethers.providers.types.RpcRequest
 import io.ethers.signers.Signer
-import java.math.BigInteger
 
 /**
  * Contract call that can be used to both read and write data to the blockchain.
@@ -214,7 +214,7 @@ abstract class ReadContractCall<C, B : ReadContractCall<C, B>>(
     val to: Address?
         get() = call.to
 
-    open val value: BigInteger?
+    open val value: BigInt?
         get() = call.value
 
     var gas: Long
@@ -223,19 +223,19 @@ abstract class ReadContractCall<C, B : ReadContractCall<C, B>>(
             call.gas = value
         }
 
-    var gasPrice: BigInteger?
+    var gasPrice: BigInt?
         get() = call.gasPrice
         @JvmSynthetic set(value) {
             call.gasPrice = value
         }
 
-    var gasFeeCap: BigInteger?
+    var gasFeeCap: BigInt?
         get() = call.gasFeeCap
         @JvmSynthetic set(value) {
             call.gasFeeCap = value
         }
 
-    var gasTipCap: BigInteger?
+    var gasTipCap: BigInt?
         get() = call.gasTipCap
         @JvmSynthetic set(value) {
             call.gasTipCap = value
@@ -266,17 +266,17 @@ abstract class ReadContractCall<C, B : ReadContractCall<C, B>>(
         return self
     }
 
-    fun gasPrice(value: BigInteger?): B {
+    fun gasPrice(value: BigInt?): B {
         call.gasPrice = value
         return self
     }
 
-    fun gasFeeCap(value: BigInteger?): B {
+    fun gasFeeCap(value: BigInt?): B {
         call.gasFeeCap = value
         return self
     }
 
-    fun gasTipCap(value: BigInteger?): B {
+    fun gasTipCap(value: BigInt?): B {
         call.gasTipCap = value
         return self
     }

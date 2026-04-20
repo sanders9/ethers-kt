@@ -3,6 +3,7 @@ package io.ethers.abi.call
 import io.ethers.abi.AbiContract
 import io.ethers.abi.error.ContractError
 import io.ethers.abi.error.DeployError
+import io.ethers.bigint.BigInt
 import io.ethers.core.Result
 import io.ethers.core.failure
 import io.ethers.core.success
@@ -19,7 +20,6 @@ import io.ethers.providers.middleware.Middleware
 import io.ethers.providers.types.PendingInclusion
 import io.ethers.providers.types.PendingTransaction
 import io.ethers.providers.types.RpcRequest
-import java.math.BigInteger
 import java.time.Duration
 
 private val PRESTATE_DIFF_TRACER = PrestateTracer(diffMode = true)
@@ -136,13 +136,13 @@ class PayableConstructorCall<T : AbiContract>(
         return PendingContractDeploy(provider, result, constructor)
     }
 
-    override var value: BigInteger?
+    override var value: BigInt?
         get() = call.value
         @JvmSynthetic set(value) {
             call.value = value
         }
 
-    fun value(value: BigInteger?): PayableConstructorCall<T> {
+    fun value(value: BigInt?): PayableConstructorCall<T> {
         call.value = value
         return this
     }
@@ -162,7 +162,7 @@ class PayableConstructorCall<T : AbiContract>(
  *         .unwrap()
  *
  *     // set the state overrides for subsequent calls to the contract
- *     contract.transfer(Address.ZERO, EthUnit.ETHER.toWei("1").toBigInteger())
+ *     contract.transfer(Address.ZERO, EthUnit.ETHER.toWei("1").toBigInt())
  *         .call(BlockId.LATEST, overrides)
  * ```
  *

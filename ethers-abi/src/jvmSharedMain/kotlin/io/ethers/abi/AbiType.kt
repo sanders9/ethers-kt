@@ -6,9 +6,9 @@ import io.ethers.abi.AbiType.Companion.canonicalSignature
 import io.ethers.abi.AbiType.FixedArray
 import io.ethers.abi.AbiType.Tuple
 import io.ethers.abi.eip712.EIP712Codec
+import io.ethers.bigint.BigInt
 import io.ethers.crypto.Hashing
 import java.lang.reflect.Modifier
-import java.math.BigInteger
 import kotlin.reflect.KClass
 
 /**
@@ -56,9 +56,9 @@ sealed interface AbiType<T : Any> {
         override val isDynamic: Boolean = true
     }
 
-    data class Int(val bitSize: kotlin.Int) : AbiType<BigInteger> {
+    data class Int(val bitSize: kotlin.Int) : AbiType<BigInt> {
         override val abiType: kotlin.String = "int$bitSize"
-        override val classType = BigInteger::class
+        override val classType = BigInt::class
         override val isDynamic: Boolean = false
 
         init {
@@ -68,9 +68,9 @@ sealed interface AbiType<T : Any> {
         }
     }
 
-    data class UInt(val bitSize: kotlin.Int) : AbiType<BigInteger> {
+    data class UInt(val bitSize: kotlin.Int) : AbiType<BigInt> {
         override val abiType: kotlin.String = "uint$bitSize"
-        override val classType = BigInteger::class
+        override val classType = BigInt::class
         override val isDynamic: Boolean = false
 
         init {

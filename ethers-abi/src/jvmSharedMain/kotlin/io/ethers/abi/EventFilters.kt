@@ -1,5 +1,7 @@
 package io.ethers.abi
 
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.types.Address
 import io.ethers.core.types.BlockId
 import io.ethers.core.types.Bytes
@@ -11,7 +13,6 @@ import io.ethers.providers.middleware.Middleware
 import io.ethers.providers.types.FilterPoller
 import io.ethers.providers.types.RpcRequest
 import io.ethers.providers.types.RpcSubscribe
-import java.math.BigInteger
 
 /**
  * Filter for non-anonymous events.
@@ -64,14 +65,14 @@ abstract class AnonymousEventFilterBase<T : ContractEvent, F : EventFilterBase<T
      * Filter events matching provided topic0 [bool].
      */
     fun topic0(bool: Boolean): F {
-        filter.topic0(Hash(if (bool) BigInteger.ONE else BigInteger.ZERO))
+        filter.topic0(Hash(if (bool) BigInts.ONE else BigInts.ZERO))
         return self
     }
 
     /**
      * Filter events matching provided topic0 [value].
      */
-    fun topic0(value: BigInteger): F {
+    fun topic0(value: BigInt): F {
         filter.topic0(Hash(value))
         return self
     }
@@ -104,14 +105,14 @@ abstract class AnonymousEventFilterBase<T : ContractEvent, F : EventFilterBase<T
      * Filter events matching any of provided topic0 [bools].
      */
     fun topic0(vararg bools: Boolean): F {
-        filter.topic0(*Array(bools.size) { Hash(if (bools[it]) BigInteger.ONE else BigInteger.ZERO) })
+        filter.topic0(*Array(bools.size) { Hash(if (bools[it]) BigInts.ONE else BigInts.ZERO) })
         return self
     }
 
     /**
      * Filter events matching any of provided topic0 [values].
      */
-    fun topic0(vararg values: BigInteger): F {
+    fun topic0(vararg values: BigInt): F {
         filter.topic0(*Array(values.size) { Hash(values[it]) })
         return self
     }
@@ -305,14 +306,14 @@ abstract class EventFilterBase<T : ContractEvent, F : EventFilterBase<T, F>>(
      * Filter events matching provided topic1 [bool].
      */
     fun topic1(bool: Boolean): F {
-        filter.topic1(Hash(if (bool) BigInteger.ONE else BigInteger.ZERO))
+        filter.topic1(Hash(if (bool) BigInts.ONE else BigInts.ZERO))
         return self
     }
 
     /**
      * Filter events matching provided topic1 [value].
      */
-    fun topic1(value: BigInteger): F {
+    fun topic1(value: BigInt): F {
         filter.topic1(Hash(value))
         return self
     }
@@ -345,14 +346,14 @@ abstract class EventFilterBase<T : ContractEvent, F : EventFilterBase<T, F>>(
      * Filter events matching any of provided topic1 [bools].
      */
     fun topic1(vararg bools: Boolean): F {
-        filter.topic1(*Array(bools.size) { Hash(if (bools[it]) BigInteger.ONE else BigInteger.ZERO) })
+        filter.topic1(*Array(bools.size) { Hash(if (bools[it]) BigInts.ONE else BigInts.ZERO) })
         return self
     }
 
     /**
      * Filter events matching any of provided topic1 [values].
      */
-    fun topic1(vararg values: BigInteger): F {
+    fun topic1(vararg values: BigInt): F {
         filter.topic1(*Array(values.size) { Hash(values[it]) })
         return self
     }
@@ -393,14 +394,14 @@ abstract class EventFilterBase<T : ContractEvent, F : EventFilterBase<T, F>>(
      * Filter events matching provided topic2 [bool].
      */
     fun topic2(bool: Boolean): F {
-        filter.topic2(Hash(if (bool) BigInteger.ONE else BigInteger.ZERO))
+        filter.topic2(Hash(if (bool) BigInts.ONE else BigInts.ZERO))
         return self
     }
 
     /**
      * Filter events matching provided topic2 [value].
      */
-    fun topic2(value: BigInteger): F {
+    fun topic2(value: BigInt): F {
         filter.topic2(Hash(value))
         return self
     }
@@ -433,14 +434,14 @@ abstract class EventFilterBase<T : ContractEvent, F : EventFilterBase<T, F>>(
      * Filter events matching any of provided topic2 [bools].
      */
     fun topic2(vararg bools: Boolean): F {
-        filter.topic2(*Array(bools.size) { Hash(if (bools[it]) BigInteger.ONE else BigInteger.ZERO) })
+        filter.topic2(*Array(bools.size) { Hash(if (bools[it]) BigInts.ONE else BigInts.ZERO) })
         return self
     }
 
     /**
      * Filter events matching any of provided topic2 [values].
      */
-    fun topic2(vararg values: BigInteger): F {
+    fun topic2(vararg values: BigInt): F {
         filter.topic2(*Array(values.size) { Hash(values[it]) })
         return self
     }
@@ -481,14 +482,14 @@ abstract class EventFilterBase<T : ContractEvent, F : EventFilterBase<T, F>>(
      * Filter events matching provided topic3 [bool].
      */
     fun topic3(bool: Boolean): F {
-        filter.topic3(Hash(if (bool) BigInteger.ONE else BigInteger.ZERO))
+        filter.topic3(Hash(if (bool) BigInts.ONE else BigInts.ZERO))
         return self
     }
 
     /**
      * Filter events matching provided topic3 [value].
      */
-    fun topic3(value: BigInteger): F {
+    fun topic3(value: BigInt): F {
         filter.topic3(Hash(value))
         return self
     }
@@ -521,14 +522,14 @@ abstract class EventFilterBase<T : ContractEvent, F : EventFilterBase<T, F>>(
      * Filter events matching any of provided topic3 [bools].
      */
     fun topic3(vararg bools: Boolean): F {
-        filter.topic3(*Array(bools.size) { Hash(if (bools[it]) BigInteger.ONE else BigInteger.ZERO) })
+        filter.topic3(*Array(bools.size) { Hash(if (bools[it]) BigInts.ONE else BigInts.ZERO) })
         return self
     }
 
     /**
      * Filter events matching any of provided topic3 [values].
      */
-    fun topic3(vararg values: BigInteger): F {
+    fun topic3(vararg values: BigInt): F {
         filter.topic3(*Array(values.size) { Hash(values[it]) })
         return self
     }

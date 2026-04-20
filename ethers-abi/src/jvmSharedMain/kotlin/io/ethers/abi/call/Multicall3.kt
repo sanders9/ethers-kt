@@ -9,6 +9,8 @@ import io.ethers.abi.call.Multicall3.Companion.DEFAULT_ADDRESS
 import io.ethers.abi.call.Multicall3.Companion.STATE_OVERRIDE
 import io.ethers.abi.error.ContractError
 import io.ethers.abi.error.RevertError
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.Result
 import io.ethers.core.failure
 import io.ethers.core.types.AccountOverride
@@ -19,7 +21,6 @@ import io.ethers.core.types.IntoCallRequest
 import io.ethers.providers.middleware.Middleware
 import kotlinx.atomicfu.locks.SynchronizedObject
 import kotlinx.atomicfu.locks.synchronized
-import java.math.BigInteger
 
 private typealias EthersResult<T, E> = Result<T, E>
 
@@ -40,9 +41,9 @@ private typealias EthersResult<T, E> = Result<T, E>
  * ```kotlin
  *    // two nested aggregate calls, and a regular one
  *    val agg = Multicall3.aggregate(
- *        ticks.map { bitmap.flipTick(it.toBigInteger(), spacing.toBigInteger()) }.aggregate(),
- *        ticks.map { bitmap.isTickSet(it.toBigInteger(), spacing.toBigInteger()) }.aggregate(),
- *        router.quote("100000".toBigInteger(), "12415235134".toBigInteger(), "982341485157841".toBigInteger())
+ *        ticks.map { bitmap.flipTick(it.toBigInt(), spacing.toBigInt()) }.aggregate(),
+ *        ticks.map { bitmap.isTickSet(it.toBigInt(), spacing.toBigInt()) }.aggregate(),
+ *        router.quote("100000".toBigInt(), "12415235134".toBigInt(), "982341485157841".toBigInt())
  *    )
  *
  *    // execute the call
@@ -50,7 +51,7 @@ private typealias EthersResult<T, E> = Result<T, E>
  *
  *    // nested aggregate calls are returned as an instance AggregationResult
  *    val areTicksSet = response.getAsAggregation<Boolean>(1)
- *    val swapResult = response.getAs<BigInteger>(2)
+ *    val swapResult = response.getAs<BigInt>(2)
  * ```
  * */
 class Multicall3(
@@ -116,7 +117,7 @@ class Multicall3(
         FUNCTION_AGGREGATE.encodeCall(listOf(calls)),
     ) {
         val data = FUNCTION_AGGREGATE.decodeResponse(it)
-        AggregateResult(data[0] as BigInteger, data[1] as List<Bytes>)
+        AggregateResult(data[0] as BigInt, data[1] as List<Bytes>)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -147,22 +148,22 @@ class Multicall3(
     ) {
         val data = FUNCTION_BLOCK_AND_AGGREGATE.decodeResponse(it)
         BlockAndAggregateResult(
-            data[0] as BigInteger,
+            data[0] as BigInt,
             data[1] as Bytes,
             data[2] as List<Result>,
         )
     }
 
-    fun getBasefee(): ReadFunctionCall<BigInteger> = ReadFunctionCall(
+    fun getBasefee(): ReadFunctionCall<BigInt> = ReadFunctionCall(
         this.provider,
         this.address,
         FUNCTION_GET_BASEFEE.encodeCall(emptyList()),
     ) {
         val data = FUNCTION_GET_BASEFEE.decodeResponse(it)
-        data[0] as BigInteger
+        data[0] as BigInt
     }
 
-    fun getBlockHash(blockNumber: BigInteger): ReadFunctionCall<Bytes> = ReadFunctionCall(
+    fun getBlockHash(blockNumber: BigInt): ReadFunctionCall<Bytes> = ReadFunctionCall(
         this.provider,
         this.address,
         FUNCTION_GET_BLOCK_HASH.encodeCall(listOf(blockNumber)),
@@ -171,22 +172,22 @@ class Multicall3(
         data[0] as Bytes
     }
 
-    fun getBlockNumber(): ReadFunctionCall<BigInteger> = ReadFunctionCall(
+    fun getBlockNumber(): ReadFunctionCall<BigInt> = ReadFunctionCall(
         this.provider,
         this.address,
         FUNCTION_GET_BLOCK_NUMBER.encodeCall(emptyList()),
     ) {
         val data = FUNCTION_GET_BLOCK_NUMBER.decodeResponse(it)
-        data[0] as BigInteger
+        data[0] as BigInt
     }
 
-    fun getChainId(): ReadFunctionCall<BigInteger> = ReadFunctionCall(
+    fun getChainId(): ReadFunctionCall<BigInt> = ReadFunctionCall(
         this.provider,
         this.address,
         FUNCTION_GET_CHAIN_ID.encodeCall(emptyList()),
     ) {
         val data = FUNCTION_GET_CHAIN_ID.decodeResponse(it)
-        data[0] as BigInteger
+        data[0] as BigInt
     }
 
     fun getCurrentBlockCoinbase(): ReadFunctionCall<Address> = ReadFunctionCall(
@@ -198,40 +199,40 @@ class Multicall3(
         data[0] as Address
     }
 
-    fun getCurrentBlockDifficulty(): ReadFunctionCall<BigInteger> = ReadFunctionCall(
+    fun getCurrentBlockDifficulty(): ReadFunctionCall<BigInt> = ReadFunctionCall(
         this.provider,
         this.address,
         FUNCTION_GET_CURRENT_BLOCK_DIFFICULTY.encodeCall(emptyList()),
     ) {
         val data = FUNCTION_GET_CURRENT_BLOCK_DIFFICULTY.decodeResponse(it)
-        data[0] as BigInteger
+        data[0] as BigInt
     }
 
-    fun getCurrentBlockGasLimit(): ReadFunctionCall<BigInteger> = ReadFunctionCall(
+    fun getCurrentBlockGasLimit(): ReadFunctionCall<BigInt> = ReadFunctionCall(
         this.provider,
         this.address,
         FUNCTION_GET_CURRENT_BLOCK_GAS_LIMIT.encodeCall(emptyList()),
     ) {
         val data = FUNCTION_GET_CURRENT_BLOCK_GAS_LIMIT.decodeResponse(it)
-        data[0] as BigInteger
+        data[0] as BigInt
     }
 
-    fun getCurrentBlockTimestamp(): ReadFunctionCall<BigInteger> = ReadFunctionCall(
+    fun getCurrentBlockTimestamp(): ReadFunctionCall<BigInt> = ReadFunctionCall(
         this.provider,
         this.address,
         FUNCTION_GET_CURRENT_BLOCK_TIMESTAMP.encodeCall(emptyList()),
     ) {
         val data = FUNCTION_GET_CURRENT_BLOCK_TIMESTAMP.decodeResponse(it)
-        data[0] as BigInteger
+        data[0] as BigInt
     }
 
-    fun getEthBalance(addr: Address): ReadFunctionCall<BigInteger> = ReadFunctionCall(
+    fun getEthBalance(addr: Address): ReadFunctionCall<BigInt> = ReadFunctionCall(
         this.provider,
         this.address,
         FUNCTION_GET_ETH_BALANCE.encodeCall(listOf(addr)),
     ) {
         val data = FUNCTION_GET_ETH_BALANCE.decodeResponse(it)
-        data[0] as BigInteger
+        data[0] as BigInt
     }
 
     fun getLastBlockHash(): ReadFunctionCall<Bytes> = ReadFunctionCall(
@@ -264,7 +265,7 @@ class Multicall3(
     ) {
         val data = FUNCTION_TRY_BLOCK_AND_AGGREGATE.decodeResponse(it)
         TryBlockAndAggregateResult(
-            data[0] as BigInteger,
+            data[0] as BigInt,
             data[1] as Bytes,
             data[2] as List<Result>,
         )
@@ -294,18 +295,18 @@ class Multicall3(
     }
 
     data class BlockAndAggregateResult(
-        val blockNumber: BigInteger,
+        val blockNumber: BigInt,
         val blockHash: Bytes,
         val returnData: List<Result>,
     )
 
     data class AggregateResult(
-        val blockNumber: BigInteger,
+        val blockNumber: BigInt,
         val returnData: List<Bytes>,
     )
 
     data class TryBlockAndAggregateResult(
-        val blockNumber: BigInteger,
+        val blockNumber: BigInt,
         val blockHash: Bytes,
         val returnData: List<Result>,
     )
@@ -365,7 +366,7 @@ class Multicall3(
     data class Call3Value(
         val target: Address,
         val allowFailure: Boolean,
-        val `value`: BigInteger,
+        val `value`: BigInt,
         val callData: Bytes,
     ) : ContractStruct {
         override val tuple: List<Any> = listOf(target, allowFailure, value, callData)
@@ -388,7 +389,7 @@ class Multicall3(
             override fun fromTuple(data: List<Any>): Call3Value = Call3Value(
                 data[0] as Address,
                 data[1] as Boolean,
-                data[2] as BigInteger,
+                data[2] as BigInt,
                 data[3] as Bytes,
             )
         }
@@ -425,7 +426,7 @@ class Multicall3(
         val provider: Middleware
 
         val to: Address?
-        val value: BigInteger?
+        val value: BigInt?
         val data: Bytes?
 
         /**
@@ -681,7 +682,7 @@ class Multicall3(
  * Encode the [Multicall3.Aggregatable] calls into as few calldata as possible. All the functions return the same
  * type: list of [Multicall3.Result]'s.
  * */
-private inline fun <T> List<Multicall3.Aggregatable<*>>.withDataAndValue(consumer: (Bytes, BigInteger?) -> T): T {
+private inline fun <T> List<Multicall3.Aggregatable<*>>.withDataAndValue(consumer: (Bytes, BigInt?) -> T): T {
     if (this.isEmpty()) {
         return consumer(Bytes.EMPTY, null)
     }
@@ -690,7 +691,7 @@ private inline fun <T> List<Multicall3.Aggregatable<*>>.withDataAndValue(consume
     var mixedFailureConditions = false
     for (i in this.indices) {
         val call = this[i]
-        if (call.value != null && call.value != BigInteger.ZERO) {
+        if (call.value != null && call.value != BigInts.ZERO) {
             anyPayable = true
             break
         }
@@ -704,10 +705,10 @@ private inline fun <T> List<Multicall3.Aggregatable<*>>.withDataAndValue(consume
     // try to pack the calls using as few calldata as possible
     return when {
         anyPayable -> {
-            var totalValue = BigInteger.ZERO
+            var totalValue = BigInts.ZERO
             val arr = List(this.size) {
                 val req = this[it]
-                val value = req.value ?: BigInteger.ZERO
+                val value = req.value ?: BigInts.ZERO
                 totalValue += value
 
                 Multicall3.Call3Value(req.to!!, req.allowFailure, value, req.data ?: Bytes.EMPTY)

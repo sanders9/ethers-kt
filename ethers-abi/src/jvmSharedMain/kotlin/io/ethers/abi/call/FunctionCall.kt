@@ -2,6 +2,7 @@ package io.ethers.abi.call
 
 import io.ethers.abi.error.ContractError
 import io.ethers.abi.error.DecodingError
+import io.ethers.bigint.BigInt
 import io.ethers.core.Result
 import io.ethers.core.failure
 import io.ethers.core.success
@@ -13,7 +14,6 @@ import io.ethers.core.types.StateOverride
 import io.ethers.providers.middleware.Middleware
 import io.ethers.providers.types.PendingTransaction
 import io.ethers.providers.types.RpcRequest
-import java.math.BigInteger
 
 class FunctionCall<T>(
     provider: Middleware,
@@ -26,7 +26,7 @@ class FunctionCall<T>(
     internal constructor(
         provider: Middleware,
         to: Address,
-        value: BigInteger?,
+        value: BigInt?,
         data: Bytes?,
         decoder: (Bytes) -> T,
     ) : this(provider, to, data, decoder) {
@@ -131,13 +131,13 @@ class PayableFunctionCall<T>(
 
     override fun handleSendResult(result: PendingTransaction) = result
 
-    override var value: BigInteger?
+    override var value: BigInt?
         get() = call.value
         @JvmSynthetic set(value) {
             call.value = value
         }
 
-    fun value(value: BigInteger?): PayableFunctionCall<T> {
+    fun value(value: BigInt?): PayableFunctionCall<T> {
         call.value = value
         return this
     }
@@ -148,7 +148,7 @@ private val UNIT_RESPONSE = success(Unit)
 class ReceiveFunctionCall(
     provider: Middleware,
     to: Address,
-    value: BigInteger,
+    value: BigInt,
 ) : ReadWriteContractCall<Unit, PendingTransaction, ReceiveFunctionCall>(provider), Multicall3.Aggregatable<Unit> {
 
     init {
