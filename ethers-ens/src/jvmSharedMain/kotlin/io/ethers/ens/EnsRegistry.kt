@@ -11,11 +11,11 @@ import io.ethers.abi.EventFactory
 import io.ethers.abi.EventFilter
 import io.ethers.abi.call.FunctionCall
 import io.ethers.abi.call.ReadFunctionCall
+import io.ethers.bigint.BigInt
 import io.ethers.core.types.Address
 import io.ethers.core.types.Bytes
 import io.ethers.core.types.Log
 import io.ethers.providers.middleware.Middleware
-import java.math.BigInteger
 
 public class EnsRegistry(
     provider: Middleware,
@@ -121,7 +121,7 @@ public class EnsRegistry(
         node: Bytes,
         owner: Address,
         resolver: Address,
-        ttl: BigInteger,
+        ttl: BigInt,
     ): FunctionCall<Unit> = FunctionCall(this.provider, this.address, FUNCTION_SET_RECORD.encodeCall(listOf(node, owner, resolver, ttl))) {
     }
 
@@ -172,7 +172,7 @@ public class EnsRegistry(
         label: Bytes,
         owner: Address,
         resolver: Address,
-        ttl: BigInteger,
+        ttl: BigInt,
     ): FunctionCall<Unit> = FunctionCall(this.provider, this.address, FUNCTION_SET_SUBNODE_RECORD.encodeCall(listOf(node, label, owner, resolver, ttl))) {
     }
 
@@ -186,7 +186,7 @@ public class EnsRegistry(
      *     function setTTL(bytes32 node, uint64 ttl) external;
      * ```
      */
-    public fun setTTL(node: Bytes, ttl: BigInteger): FunctionCall<Unit> = FunctionCall(this.provider, this.address, FUNCTION_SET_TTL.encodeCall(listOf(node, ttl))) {
+    public fun setTTL(node: Bytes, ttl: BigInt): FunctionCall<Unit> = FunctionCall(this.provider, this.address, FUNCTION_SET_TTL.encodeCall(listOf(node, ttl))) {
     }
 
     /**
@@ -199,9 +199,9 @@ public class EnsRegistry(
      *     function ttl(bytes32 node) external returns (uint64);
      * ```
      */
-    public fun ttl(node: Bytes): ReadFunctionCall<BigInteger> = ReadFunctionCall(this.provider, this.address, FUNCTION_TTL.encodeCall(listOf<Any>(node))) {
+    public fun ttl(node: Bytes): ReadFunctionCall<BigInt> = ReadFunctionCall(this.provider, this.address, FUNCTION_TTL.encodeCall(listOf<Any>(node))) {
         val data = FUNCTION_TTL.decodeResponse(it)
-        data[0] as java.math.BigInteger
+        data[0] as io.ethers.bigint.BigInt
     }
 
     public sealed class Event : ContractEvent
@@ -376,7 +376,7 @@ public class EnsRegistry(
      */
     public data class NewTTL(
         public val node: Bytes,
-        public val ttl: BigInteger,
+        public val ttl: BigInt,
         override val log: Log,
     ) : EnsRegistry.Event() {
         override fun equals(other: Any?): Boolean {
@@ -408,7 +408,7 @@ public class EnsRegistry(
             override fun decode(log: Log): NewTTL? = super.decode(log)
 
             @JvmStatic
-            override fun decode(log: Log, `data`: List<Any>): NewTTL = NewTTL(data[0] as io.ethers.core.types.Bytes, data[1] as java.math.BigInteger, log)
+            override fun decode(log: Log, `data`: List<Any>): NewTTL = NewTTL(data[0] as io.ethers.core.types.Bytes, data[1] as io.ethers.bigint.BigInt, log)
         }
     }
 

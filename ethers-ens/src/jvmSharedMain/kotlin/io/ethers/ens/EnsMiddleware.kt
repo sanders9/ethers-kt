@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.ethers.abi.AbiCodec
 import io.ethers.abi.AbiFunction
 import io.ethers.abi.AbiType
+import io.ethers.bigint.BigInts
 import io.ethers.core.ExceptionalError
 import io.ethers.core.FastHex
 import io.ethers.core.Jackson
@@ -28,7 +29,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
-import java.math.BigInteger
 import java.util.concurrent.CompletableFuture
 
 class EnsMiddleware @JvmOverloads constructor(
@@ -459,7 +459,7 @@ class EnsMiddleware @JvmOverloads constructor(
                             null,
                         ),
                     )
-                } else if (balanceRes.unwrap() == BigInteger.ZERO) {
+                } else if (balanceRes.unwrap() == BigInts.ZERO) {
                     return failure(
                         Error.IncorrectOwner(
                             "ENS owner has 0 balance of token: ${nftToken.tokenId} for nft: ${nftToken.nftAddr}",

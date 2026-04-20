@@ -11,11 +11,11 @@ import io.ethers.abi.EventFactory
 import io.ethers.abi.EventFilter
 import io.ethers.abi.call.FunctionCall
 import io.ethers.abi.call.ReadFunctionCall
+import io.ethers.bigint.BigInt
 import io.ethers.core.types.Address
 import io.ethers.core.types.Bytes
 import io.ethers.core.types.Log
 import io.ethers.providers.middleware.Middleware
-import java.math.BigInteger
 
 public class ERC1155(
     provider: Middleware,
@@ -31,9 +31,9 @@ public class ERC1155(
      *     function balanceOf(address _owner, uint256 _id) external returns (uint256);
      * ```
      */
-    public fun balanceOf(_owner: Address, _id: BigInteger): ReadFunctionCall<BigInteger> = ReadFunctionCall(this.provider, this.address, FUNCTION_BALANCE_OF.encodeCall(listOf(_owner, _id))) {
+    public fun balanceOf(_owner: Address, _id: BigInt): ReadFunctionCall<BigInt> = ReadFunctionCall(this.provider, this.address, FUNCTION_BALANCE_OF.encodeCall(listOf(_owner, _id))) {
         val data = FUNCTION_BALANCE_OF.decodeResponse(it)
-        data[0] as java.math.BigInteger
+        data[0] as io.ethers.bigint.BigInt
     }
 
     /**
@@ -46,13 +46,13 @@ public class ERC1155(
      *     function balanceOfBatch(address[] _owners, uint256[] _ids) external returns (uint256[]);
      * ```
      */
-    public fun balanceOfBatch(_owners: List<Address>, _ids: List<BigInteger>): ReadFunctionCall<List<BigInteger>> = ReadFunctionCall(
+    public fun balanceOfBatch(_owners: List<Address>, _ids: List<BigInt>): ReadFunctionCall<List<BigInt>> = ReadFunctionCall(
         this.provider,
         this.address,
         FUNCTION_BALANCE_OF_BATCH.encodeCall(listOf<Any>(_owners, _ids)),
     ) {
         val data = FUNCTION_BALANCE_OF_BATCH.decodeResponse(it)
-        data[0] as List<java.math.BigInteger>
+        data[0] as List<io.ethers.bigint.BigInt>
     }
 
     /**
@@ -87,8 +87,8 @@ public class ERC1155(
     public fun onERC1155BatchReceived(
         _operator: Address,
         _from: Address,
-        _ids: List<BigInteger>,
-        _values: List<BigInteger>,
+        _ids: List<BigInt>,
+        _values: List<BigInt>,
         _data: Bytes,
     ): FunctionCall<Bytes> = FunctionCall(
         this.provider,
@@ -112,8 +112,8 @@ public class ERC1155(
     public fun onERC1155Received(
         _operator: Address,
         _from: Address,
-        _id: BigInteger,
-        _value: BigInteger,
+        _id: BigInt,
+        _value: BigInt,
         _data: Bytes,
     ): FunctionCall<Bytes> = FunctionCall(
         this.provider,
@@ -137,8 +137,8 @@ public class ERC1155(
     public fun safeBatchTransferFrom(
         _from: Address,
         _to: Address,
-        _ids: List<BigInteger>,
-        _values: List<BigInteger>,
+        _ids: List<BigInt>,
+        _values: List<BigInt>,
         _data: Bytes,
     ): FunctionCall<Unit> = FunctionCall(
         this.provider,
@@ -160,8 +160,8 @@ public class ERC1155(
     public fun safeTransferFrom(
         _from: Address,
         _to: Address,
-        _id: BigInteger,
-        _value: BigInteger,
+        _id: BigInt,
+        _value: BigInt,
         _data: Bytes,
     ): FunctionCall<Unit> = FunctionCall(
         this.provider,
@@ -216,7 +216,7 @@ public class ERC1155(
      *     function uri(uint256 _id) external returns (string);
      * ```
      */
-    public fun uri(_id: BigInteger): ReadFunctionCall<String> = ReadFunctionCall(this.provider, this.address, FUNCTION_URI.encodeCall(listOf<Any>(_id))) {
+    public fun uri(_id: BigInt): ReadFunctionCall<String> = ReadFunctionCall(this.provider, this.address, FUNCTION_URI.encodeCall(listOf<Any>(_id))) {
         val data = FUNCTION_URI.decodeResponse(it)
         data[0] as kotlin.String
     }
@@ -305,8 +305,8 @@ public class ERC1155(
         public val _operator: Address,
         public val _from: Address,
         public val _to: Address,
-        public val _ids: List<BigInteger>,
-        public val _values: List<BigInteger>,
+        public val _ids: List<BigInt>,
+        public val _values: List<BigInt>,
         override val log: Log,
     ) : ERC1155.Event() {
         override fun equals(other: Any?): Boolean {
@@ -358,8 +358,8 @@ public class ERC1155(
                 data[0] as io.ethers.core.types.Address,
                 data[1] as io.ethers.core.types.Address,
                 data[2] as io.ethers.core.types.Address,
-                data[3] as List<java.math.BigInteger>,
-                data[4] as List<java.math.BigInteger>,
+                data[3] as List<io.ethers.bigint.BigInt>,
+                data[4] as List<io.ethers.bigint.BigInt>,
                 log,
             )
         }
@@ -381,8 +381,8 @@ public class ERC1155(
         public val _operator: Address,
         public val _from: Address,
         public val _to: Address,
-        public val _id: BigInteger,
-        public val _value: BigInteger,
+        public val _id: BigInt,
+        public val _value: BigInt,
         override val log: Log,
     ) : ERC1155.Event() {
         override fun equals(other: Any?): Boolean {
@@ -434,8 +434,8 @@ public class ERC1155(
                 data[0] as io.ethers.core.types.Address,
                 data[1] as io.ethers.core.types.Address,
                 data[2] as io.ethers.core.types.Address,
-                data[3] as java.math.BigInteger,
-                data[4] as java.math.BigInteger,
+                data[3] as io.ethers.bigint.BigInt,
+                data[4] as io.ethers.bigint.BigInt,
                 log,
             )
         }
@@ -455,7 +455,7 @@ public class ERC1155(
      */
     public data class URI(
         public val _value: String,
-        public val _id: BigInteger,
+        public val _id: BigInt,
         override val log: Log,
     ) : ERC1155.Event() {
         override fun equals(other: Any?): Boolean {
@@ -491,7 +491,7 @@ public class ERC1155(
             override fun decode(log: Log): URI? = super.decode(log)
 
             @JvmStatic
-            override fun decode(log: Log, `data`: List<Any>): URI = URI(data[0] as kotlin.String, data[1] as java.math.BigInteger, log)
+            override fun decode(log: Log, `data`: List<Any>): URI = URI(data[0] as kotlin.String, data[1] as io.ethers.bigint.BigInt, log)
         }
     }
 

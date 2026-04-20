@@ -12,11 +12,11 @@ import io.ethers.abi.EventFilter
 import io.ethers.abi.call.FunctionCall
 import io.ethers.abi.call.PayableFunctionCall
 import io.ethers.abi.call.ReadFunctionCall
+import io.ethers.bigint.BigInt
 import io.ethers.core.types.Address
 import io.ethers.core.types.Bytes
 import io.ethers.core.types.Log
 import io.ethers.providers.middleware.Middleware
-import java.math.BigInteger
 
 public class ERC721(
     provider: Middleware,
@@ -32,7 +32,7 @@ public class ERC721(
      *     function approve(address _approved, uint256 _tokenId) external payable;
      * ```
      */
-    public fun approve(_approved: Address, _tokenId: BigInteger): PayableFunctionCall<Unit> = PayableFunctionCall(this.provider, this.address, FUNCTION_APPROVE.encodeCall(listOf(_approved, _tokenId))) {
+    public fun approve(_approved: Address, _tokenId: BigInt): PayableFunctionCall<Unit> = PayableFunctionCall(this.provider, this.address, FUNCTION_APPROVE.encodeCall(listOf(_approved, _tokenId))) {
     }
 
     /**
@@ -45,9 +45,9 @@ public class ERC721(
      *     function balanceOf(address _owner) external returns (uint256);
      * ```
      */
-    public fun balanceOf(_owner: Address): ReadFunctionCall<BigInteger> = ReadFunctionCall(this.provider, this.address, FUNCTION_BALANCE_OF.encodeCall(listOf<Any>(_owner))) {
+    public fun balanceOf(_owner: Address): ReadFunctionCall<BigInt> = ReadFunctionCall(this.provider, this.address, FUNCTION_BALANCE_OF.encodeCall(listOf<Any>(_owner))) {
         val data = FUNCTION_BALANCE_OF.decodeResponse(it)
-        data[0] as java.math.BigInteger
+        data[0] as io.ethers.bigint.BigInt
     }
 
     /**
@@ -60,7 +60,7 @@ public class ERC721(
      *     function getApproved(uint256 _tokenId) external returns (address);
      * ```
      */
-    public fun getApproved(_tokenId: BigInteger): ReadFunctionCall<Address> = ReadFunctionCall(this.provider, this.address, FUNCTION_GET_APPROVED.encodeCall(listOf<Any>(_tokenId))) {
+    public fun getApproved(_tokenId: BigInt): ReadFunctionCall<Address> = ReadFunctionCall(this.provider, this.address, FUNCTION_GET_APPROVED.encodeCall(listOf<Any>(_tokenId))) {
         val data = FUNCTION_GET_APPROVED.decodeResponse(it)
         data[0] as io.ethers.core.types.Address
     }
@@ -108,7 +108,7 @@ public class ERC721(
     public fun onERC721Received(
         _operator: Address,
         _from: Address,
-        _tokenId: BigInteger,
+        _tokenId: BigInt,
         _data: Bytes,
     ): FunctionCall<Bytes> = FunctionCall(this.provider, this.address, FUNCTION_ON_ERC721_RECEIVED.encodeCall(listOf(_operator, _from, _tokenId, _data))) {
         val data = FUNCTION_ON_ERC721_RECEIVED.decodeResponse(it)
@@ -125,7 +125,7 @@ public class ERC721(
      *     function ownerOf(uint256 _tokenId) external returns (address);
      * ```
      */
-    public fun ownerOf(_tokenId: BigInteger): ReadFunctionCall<Address> = ReadFunctionCall(this.provider, this.address, FUNCTION_OWNER_OF.encodeCall(listOf<Any>(_tokenId))) {
+    public fun ownerOf(_tokenId: BigInt): ReadFunctionCall<Address> = ReadFunctionCall(this.provider, this.address, FUNCTION_OWNER_OF.encodeCall(listOf<Any>(_tokenId))) {
         val data = FUNCTION_OWNER_OF.decodeResponse(it)
         data[0] as io.ethers.core.types.Address
     }
@@ -143,7 +143,7 @@ public class ERC721(
     public fun safeTransferFrom(
         _from: Address,
         _to: Address,
-        _tokenId: BigInteger,
+        _tokenId: BigInt,
     ): PayableFunctionCall<Unit> = PayableFunctionCall(this.provider, this.address, FUNCTION_SAFE_TRANSFER_FROM.encodeCall(listOf(_from, _to, _tokenId))) {
     }
 
@@ -160,7 +160,7 @@ public class ERC721(
     public fun safeTransferFrom(
         _from: Address,
         _to: Address,
-        _tokenId: BigInteger,
+        _tokenId: BigInt,
         `data`: Bytes,
     ): PayableFunctionCall<Unit> = PayableFunctionCall(this.provider, this.address, FUNCTION_SAFE_TRANSFER_FROM_1.encodeCall(listOf(_from, _to, _tokenId, `data`))) {
     }
@@ -218,9 +218,9 @@ public class ERC721(
      *     function tokenByIndex(uint256 _index) external returns (uint256);
      * ```
      */
-    public fun tokenByIndex(_index: BigInteger): ReadFunctionCall<BigInteger> = ReadFunctionCall(this.provider, this.address, FUNCTION_TOKEN_BY_INDEX.encodeCall(listOf<Any>(_index))) {
+    public fun tokenByIndex(_index: BigInt): ReadFunctionCall<BigInt> = ReadFunctionCall(this.provider, this.address, FUNCTION_TOKEN_BY_INDEX.encodeCall(listOf<Any>(_index))) {
         val data = FUNCTION_TOKEN_BY_INDEX.decodeResponse(it)
-        data[0] as java.math.BigInteger
+        data[0] as io.ethers.bigint.BigInt
     }
 
     /**
@@ -233,9 +233,9 @@ public class ERC721(
      *     function tokenOfOwnerByIndex(address _owner, uint256 _index) external returns (uint256);
      * ```
      */
-    public fun tokenOfOwnerByIndex(_owner: Address, _index: BigInteger): ReadFunctionCall<BigInteger> = ReadFunctionCall(this.provider, this.address, FUNCTION_TOKEN_OF_OWNER_BY_INDEX.encodeCall(listOf(_owner, _index))) {
+    public fun tokenOfOwnerByIndex(_owner: Address, _index: BigInt): ReadFunctionCall<BigInt> = ReadFunctionCall(this.provider, this.address, FUNCTION_TOKEN_OF_OWNER_BY_INDEX.encodeCall(listOf(_owner, _index))) {
         val data = FUNCTION_TOKEN_OF_OWNER_BY_INDEX.decodeResponse(it)
-        data[0] as java.math.BigInteger
+        data[0] as io.ethers.bigint.BigInt
     }
 
     /**
@@ -248,7 +248,7 @@ public class ERC721(
      *     function tokenURI(uint256 _tokenId) external returns (string);
      * ```
      */
-    public fun tokenURI(_tokenId: BigInteger): ReadFunctionCall<String> = ReadFunctionCall(this.provider, this.address, FUNCTION_TOKEN_URI.encodeCall(listOf<Any>(_tokenId))) {
+    public fun tokenURI(_tokenId: BigInt): ReadFunctionCall<String> = ReadFunctionCall(this.provider, this.address, FUNCTION_TOKEN_URI.encodeCall(listOf<Any>(_tokenId))) {
         val data = FUNCTION_TOKEN_URI.decodeResponse(it)
         data[0] as kotlin.String
     }
@@ -263,9 +263,9 @@ public class ERC721(
      *     function totalSupply() external returns (uint256);
      * ```
      */
-    public fun totalSupply(): ReadFunctionCall<BigInteger> = ReadFunctionCall(this.provider, this.address, FUNCTION_TOTAL_SUPPLY.encodeCall(emptyList())) {
+    public fun totalSupply(): ReadFunctionCall<BigInt> = ReadFunctionCall(this.provider, this.address, FUNCTION_TOTAL_SUPPLY.encodeCall(emptyList())) {
         val data = FUNCTION_TOTAL_SUPPLY.decodeResponse(it)
-        data[0] as java.math.BigInteger
+        data[0] as io.ethers.bigint.BigInt
     }
 
     /**
@@ -281,7 +281,7 @@ public class ERC721(
     public fun transferFrom(
         _from: Address,
         _to: Address,
-        _tokenId: BigInteger,
+        _tokenId: BigInt,
     ): PayableFunctionCall<Unit> = PayableFunctionCall(this.provider, this.address, FUNCTION_TRANSFER_FROM.encodeCall(listOf(_from, _to, _tokenId))) {
     }
 
@@ -302,7 +302,7 @@ public class ERC721(
     public data class Approval(
         public val _owner: Address,
         public val _approved: Address,
-        public val _tokenId: BigInteger,
+        public val _tokenId: BigInt,
         override val log: Log,
     ) : ERC721.Event() {
         override fun equals(other: Any?): Boolean {
@@ -336,7 +336,7 @@ public class ERC721(
             override fun decode(log: Log): Approval? = super.decode(log)
 
             @JvmStatic
-            override fun decode(log: Log, `data`: List<Any>): Approval = Approval(data[0] as io.ethers.core.types.Address, data[1] as io.ethers.core.types.Address, data[2] as java.math.BigInteger, log)
+            override fun decode(log: Log, `data`: List<Any>): Approval = Approval(data[0] as io.ethers.core.types.Address, data[1] as io.ethers.core.types.Address, data[2] as io.ethers.bigint.BigInt, log)
         }
     }
 
@@ -408,7 +408,7 @@ public class ERC721(
     public data class Transfer(
         public val _from: Address,
         public val _to: Address,
-        public val _tokenId: BigInteger,
+        public val _tokenId: BigInt,
         override val log: Log,
     ) : ERC721.Event() {
         override fun equals(other: Any?): Boolean {
@@ -442,7 +442,7 @@ public class ERC721(
             override fun decode(log: Log): Transfer? = super.decode(log)
 
             @JvmStatic
-            override fun decode(log: Log, `data`: List<Any>): Transfer = Transfer(data[0] as io.ethers.core.types.Address, data[1] as io.ethers.core.types.Address, data[2] as java.math.BigInteger, log)
+            override fun decode(log: Log, `data`: List<Any>): Transfer = Transfer(data[0] as io.ethers.core.types.Address, data[1] as io.ethers.core.types.Address, data[2] as io.ethers.bigint.BigInt, log)
         }
     }
 

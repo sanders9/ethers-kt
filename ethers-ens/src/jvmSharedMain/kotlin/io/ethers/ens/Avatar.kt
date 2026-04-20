@@ -2,12 +2,12 @@ package io.ethers.ens
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.ethers.bigint.BigInt
 import io.ethers.core.Result
 import io.ethers.core.failure
 import io.ethers.core.success
 import io.ethers.core.types.Address
 import io.ethers.core.unwrapOrReturn
-import java.math.BigInteger
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 internal data class MetadataDTO(
@@ -24,7 +24,7 @@ internal class AvatarNFT private constructor(
     val chainId: Long,
     val nftType: AvatarNFTType,
     val nftAddr: Address,
-    val tokenId: BigInteger,
+    val tokenId: BigInt,
 ) {
     companion object {
         /**
@@ -63,7 +63,7 @@ internal class AvatarNFT private constructor(
                 return failure(EnsMiddleware.Error.AvatarParsing("Invalid URI NFT contract address: ${typeAndAddr[1]}", it))
             }
 
-            val tokenId = runCatching { BigInteger(parts[2]) }.unwrapOrReturn {
+            val tokenId = runCatching { BigInt(parts[2]) }.unwrapOrReturn {
                 return failure(EnsMiddleware.Error.AvatarParsing("Unsupported URI token id type: ${parts[2]}", it))
             }
 
