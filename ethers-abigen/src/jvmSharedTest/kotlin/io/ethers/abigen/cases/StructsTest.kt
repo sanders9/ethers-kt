@@ -10,11 +10,11 @@ import io.ethers.abigen.getDeclaredStructs
 import io.ethers.abigen.nestedClass
 import io.ethers.abigen.parametrizedBy
 import io.ethers.abigen.typedNestedClass
+import io.ethers.bigint.BigInt
 import io.ethers.core.types.Bytes
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
-import java.math.BigInteger
 import kotlin.reflect.full.companionObjectInstance
 import kotlin.reflect.full.primaryConstructor
 
@@ -77,7 +77,7 @@ class StructsTest : FunSpec({
             val desc = "hello"
             val simpleInstance = simple.primaryConstructor!!.call(true, Bytes("0x12345654123763afed"))
             val complexInstance = complex.primaryConstructor!!.call(
-                listOf(listOf(listOf(BigInteger("1"), BigInteger("2")))),
+                listOf(listOf(listOf(BigInt("1"), BigInt("2")))),
                 listOf("hello", "world", "evm"),
             )
 
@@ -107,7 +107,7 @@ class StructsTest : FunSpec({
                             "status",
                             List::class.parametrizedBy(
                                 List::class.parametrizedBy(
-                                    List::class.parametrizedBy(BigInteger::class),
+                                    List::class.parametrizedBy(BigInt::class),
                                 ),
                             ),
                         ),

@@ -7,6 +7,7 @@ kotlin {
     sourceSets {
         val jvmSharedMain by getting {
             dependencies {
+                api(project(":ethers-bigint"))
                 api(project(":ethers-core"))
                 api(project(":ethers-providers"))
                 api(project(":ethers-abi"))

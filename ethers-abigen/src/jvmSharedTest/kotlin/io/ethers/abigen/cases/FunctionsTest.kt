@@ -11,12 +11,12 @@ import io.ethers.abigen.getAbiFunctionField
 import io.ethers.abigen.getDeclaredFunctions
 import io.ethers.abigen.nestedClass
 import io.ethers.abigen.parametrizedBy
+import io.ethers.bigint.BigInt
 import io.ethers.core.types.Address
 import io.ethers.providers.middleware.Middleware
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.shouldBe
-import java.math.BigInteger
 import kotlin.reflect.full.companionObject
 
 class FunctionsTest : FunSpec({
@@ -37,7 +37,7 @@ class FunctionsTest : FunSpec({
                 FunctionDescriptor(
                     "noArgsReturns",
                     emptyList(),
-                    FunctionCall::class.parametrizedBy(BigInteger::class),
+                    FunctionCall::class.parametrizedBy(BigInt::class),
                 ),
                 FunctionDescriptor(
                     "noArgsMultiReturns",
@@ -47,7 +47,7 @@ class FunctionsTest : FunSpec({
                 FunctionDescriptor(
                     "simpleArgs",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                     ),
                     FunctionCall::class.parametrizedBy(Unit::class),
@@ -55,29 +55,29 @@ class FunctionsTest : FunSpec({
                 FunctionDescriptor(
                     "complexArgs",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor(
                             "details",
                             List::class.parametrizedBy(List::class.parametrizedBy(clazz.nestedClass("Details"))),
                         ),
                     ),
-                    FunctionCall::class.parametrizedBy(BigInteger::class),
+                    FunctionCall::class.parametrizedBy(BigInt::class),
                 ),
                 FunctionDescriptor(
                     "complexArgs2",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor(
                             "differentName",
                             List::class.parametrizedBy(List::class.parametrizedBy(clazz.nestedClass("Details"))),
                         ),
                     ),
-                    FunctionCall::class.parametrizedBy(BigInteger::class),
+                    FunctionCall::class.parametrizedBy(BigInt::class),
                 ),
                 FunctionDescriptor(
                     "overloaded",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                     ),
                     FunctionCall::class.parametrizedBy(Unit::class),
@@ -85,7 +85,7 @@ class FunctionsTest : FunSpec({
                 FunctionDescriptor(
                     "overloaded",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                         ArgDescriptor("done", Boolean::class),
                     ),
@@ -94,26 +94,26 @@ class FunctionsTest : FunSpec({
                 FunctionDescriptor(
                     "get_dy",
                     listOf(
-                        ArgDescriptor("i", BigInteger::class),
-                        ArgDescriptor("j", BigInteger::class),
-                        ArgDescriptor("dx", BigInteger::class),
+                        ArgDescriptor("i", BigInt::class),
+                        ArgDescriptor("j", BigInt::class),
+                        ArgDescriptor("dx", BigInt::class),
                     ),
-                    ReadFunctionCall::class.parametrizedBy(BigInteger::class),
+                    ReadFunctionCall::class.parametrizedBy(BigInt::class),
                 ),
                 FunctionDescriptor(
                     "get_dy_0x5e0d443f",
                     listOf(
-                        ArgDescriptor("i", BigInteger::class),
-                        ArgDescriptor("j", BigInteger::class),
-                        ArgDescriptor("dx", BigInteger::class),
+                        ArgDescriptor("i", BigInt::class),
+                        ArgDescriptor("j", BigInt::class),
+                        ArgDescriptor("dx", BigInt::class),
                     ),
-                    ReadFunctionCall::class.parametrizedBy(BigInteger::class),
+                    ReadFunctionCall::class.parametrizedBy(BigInt::class),
                 ),
                 // ---------------- RESERVED KEYWORDS ----------------
                 FunctionDescriptor(
                     "_class",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                     ),
                     FunctionCall::class.parametrizedBy(Unit::class),
@@ -121,7 +121,7 @@ class FunctionsTest : FunSpec({
                 FunctionDescriptor(
                     "_package",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                     ),
                     FunctionCall::class.parametrizedBy(Unit::class),
@@ -130,7 +130,7 @@ class FunctionsTest : FunSpec({
                 FunctionDescriptor(
                     "payableArgs",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                     ),
                     PayableFunctionCall::class.parametrizedBy(Unit::class),
@@ -138,7 +138,7 @@ class FunctionsTest : FunSpec({
                 FunctionDescriptor(
                     "viewArgs",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                     ),
                     ReadFunctionCall::class.parametrizedBy(Unit::class),
@@ -159,7 +159,7 @@ class FunctionsTest : FunSpec({
                 FunctionDescriptor(
                     "noArgsReturns",
                     listOf(providerArg, addressArg),
-                    FunctionCall::class.parametrizedBy(BigInteger::class),
+                    FunctionCall::class.parametrizedBy(BigInt::class),
                 ),
                 FunctionDescriptor(
                     "noArgsMultiReturns",
@@ -171,7 +171,7 @@ class FunctionsTest : FunSpec({
                     listOf(
                         providerArg,
                         addressArg,
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                     ),
                     FunctionCall::class.parametrizedBy(Unit::class),
@@ -181,33 +181,33 @@ class FunctionsTest : FunSpec({
                     listOf(
                         providerArg,
                         addressArg,
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor(
                             "details",
                             List::class.parametrizedBy(List::class.parametrizedBy(clazz.nestedClass("Details"))),
                         ),
                     ),
-                    FunctionCall::class.parametrizedBy(BigInteger::class),
+                    FunctionCall::class.parametrizedBy(BigInt::class),
                 ),
                 FunctionDescriptor(
                     "complexArgs2",
                     listOf(
                         providerArg,
                         addressArg,
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor(
                             "differentName",
                             List::class.parametrizedBy(List::class.parametrizedBy(clazz.nestedClass("Details"))),
                         ),
                     ),
-                    FunctionCall::class.parametrizedBy(BigInteger::class),
+                    FunctionCall::class.parametrizedBy(BigInt::class),
                 ),
                 FunctionDescriptor(
                     "overloaded",
                     listOf(
                         providerArg,
                         addressArg,
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                     ),
                     FunctionCall::class.parametrizedBy(Unit::class),
@@ -217,7 +217,7 @@ class FunctionsTest : FunSpec({
                     listOf(
                         providerArg,
                         addressArg,
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                         ArgDescriptor("done", Boolean::class),
                     ),
@@ -228,22 +228,22 @@ class FunctionsTest : FunSpec({
                     listOf(
                         providerArg,
                         addressArg,
-                        ArgDescriptor("i", BigInteger::class),
-                        ArgDescriptor("j", BigInteger::class),
-                        ArgDescriptor("dx", BigInteger::class),
+                        ArgDescriptor("i", BigInt::class),
+                        ArgDescriptor("j", BigInt::class),
+                        ArgDescriptor("dx", BigInt::class),
                     ),
-                    ReadFunctionCall::class.parametrizedBy(BigInteger::class),
+                    ReadFunctionCall::class.parametrizedBy(BigInt::class),
                 ),
                 FunctionDescriptor(
                     "get_dy_0x5e0d443f",
                     listOf(
                         providerArg,
                         addressArg,
-                        ArgDescriptor("i", BigInteger::class),
-                        ArgDescriptor("j", BigInteger::class),
-                        ArgDescriptor("dx", BigInteger::class),
+                        ArgDescriptor("i", BigInt::class),
+                        ArgDescriptor("j", BigInt::class),
+                        ArgDescriptor("dx", BigInt::class),
                     ),
-                    ReadFunctionCall::class.parametrizedBy(BigInteger::class),
+                    ReadFunctionCall::class.parametrizedBy(BigInt::class),
                 ),
                 // ---------------- RESERVED KEYWORDS ----------------
                 FunctionDescriptor(
@@ -251,7 +251,7 @@ class FunctionsTest : FunSpec({
                     listOf(
                         providerArg,
                         addressArg,
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                     ),
                     FunctionCall::class.parametrizedBy(Unit::class),
@@ -261,7 +261,7 @@ class FunctionsTest : FunSpec({
                     listOf(
                         providerArg,
                         addressArg,
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                     ),
                     FunctionCall::class.parametrizedBy(Unit::class),
@@ -272,7 +272,7 @@ class FunctionsTest : FunSpec({
                     listOf(
                         providerArg,
                         addressArg,
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                     ),
                     PayableFunctionCall::class.parametrizedBy(Unit::class),
@@ -282,7 +282,7 @@ class FunctionsTest : FunSpec({
                     listOf(
                         providerArg,
                         addressArg,
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                     ),
                     ReadFunctionCall::class.parametrizedBy(Unit::class),

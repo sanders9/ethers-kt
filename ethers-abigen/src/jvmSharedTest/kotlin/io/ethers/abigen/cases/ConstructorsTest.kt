@@ -9,10 +9,10 @@ import io.ethers.abigen.ArgDescriptor
 import io.ethers.abigen.getDeclaredFunctions
 import io.ethers.abigen.nestedClass
 import io.ethers.abigen.parametrizedBy
+import io.ethers.bigint.BigInt
 import io.ethers.providers.middleware.Middleware
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import java.math.BigInteger
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.isSubclassOf
 
@@ -57,7 +57,7 @@ class ConstructorsTest : FunSpec({
 
                 deploy.arguments shouldBe listOf(
                     ArgDescriptor("provider", Middleware::class),
-                    ArgDescriptor("value", BigInteger::class),
+                    ArgDescriptor("value", BigInt::class),
                     ArgDescriptor("description", String::class),
                 )
                 deploy.returnType shouldBe PayableConstructorCall::class.parametrizedBy(payableConstructorWithArgs)
@@ -71,7 +71,7 @@ class ConstructorsTest : FunSpec({
                 val detailsStruct = complexArgsConstructor.nestedClass("Details")
                 deploy.arguments shouldBe listOf(
                     ArgDescriptor("provider", Middleware::class),
-                    ArgDescriptor("number", BigInteger::class),
+                    ArgDescriptor("number", BigInt::class),
                     ArgDescriptor("details", detailsStruct),
                 )
 

@@ -14,13 +14,13 @@ import io.ethers.abigen.getDeclaredStructs
 import io.ethers.abigen.nestedClass
 import io.ethers.abigen.parametrizedBy
 import io.ethers.abigen.typedNestedClass
+import io.ethers.bigint.BigInt
 import io.ethers.core.types.Address
 import io.ethers.core.types.Bytes
 import io.ethers.providers.middleware.Middleware
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.shouldBe
-import java.math.BigInteger
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.isSubclassOf
 
@@ -53,8 +53,8 @@ class BeefyV1Test : FunSpec({
                 ClassDescriptor(
                     "AuthoritySetCommitment",
                     listOf(
-                        ArgDescriptor("id", BigInteger::class),
-                        ArgDescriptor("len", BigInteger::class),
+                        ArgDescriptor("id", BigInt::class),
+                        ArgDescriptor("len", BigInt::class),
                         ArgDescriptor("root", Bytes::class),
                     ),
                 ),
@@ -68,11 +68,11 @@ class BeefyV1Test : FunSpec({
                 ClassDescriptor(
                     "BeefyConsensusState",
                     listOf(
-                        ArgDescriptor("latestHeight", BigInteger::class),
-                        ArgDescriptor("latestTimestamp", BigInteger::class),
-                        ArgDescriptor("frozenHeight", BigInteger::class),
+                        ArgDescriptor("latestHeight", BigInt::class),
+                        ArgDescriptor("latestTimestamp", BigInt::class),
+                        ArgDescriptor("frozenHeight", BigInt::class),
                         ArgDescriptor("latestHeadsRoot", Bytes::class),
-                        ArgDescriptor("beefyActivationBlock", BigInteger::class),
+                        ArgDescriptor("beefyActivationBlock", BigInt::class),
                         ArgDescriptor("currentAuthoritySet", clazz.nestedClass("AuthoritySetCommitment")),
                         ArgDescriptor("nextAuthoritySet", clazz.nestedClass("AuthoritySetCommitment")),
                     ),

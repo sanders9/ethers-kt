@@ -15,6 +15,7 @@ import io.ethers.abi.ContractStruct
 import io.ethers.abi.StructFactory
 
 private val ABI_TYPE_SIMPLE_NAME = AbiType::class.java.simpleName
+private val BIG_INT_CLASS_NAME = ClassName("io.ethers.bigint", "BigInt")
 
 sealed interface AbiTypeParameter {
     val name: String
@@ -30,7 +31,12 @@ sealed interface AbiTypeParameter {
         override val abiType: AbiType<*>,
         override val indexed: Boolean,
     ) : AbiTypeParameter {
-        override val apiType: TypeName = abiType.classType.asClassName()
+        override val apiType: TypeName = when (abiType) {
+            // Use the io.ethers.bigint.BigInt typealias rather than the underlying java.math.BigInteger
+            // so that the generated code stays platform-agnostic.
+            is AbiType.Int, is AbiType.UInt -> BIG_INT_CLASS_NAME
+            else -> abiType.classType.asClassName()
+        }
         override val originalType: String = abiType.abiType
         override val abiTypeInitializer: String
 

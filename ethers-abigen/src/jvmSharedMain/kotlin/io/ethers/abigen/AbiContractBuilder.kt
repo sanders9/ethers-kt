@@ -39,11 +39,12 @@ import io.ethers.core.types.Hash
 import io.ethers.core.types.Log
 import io.ethers.providers.middleware.Middleware
 import java.io.File
-import java.math.BigInteger
 import javax.lang.model.SourceVersion
 import kotlin.reflect.KClass
 import kotlin.reflect.full.functions
 import kotlin.reflect.full.memberProperties
+
+private val BIG_INT_CLASS_NAME = ClassName("io.ethers.bigint", "BigInt")
 
 /**
  * IMPORTANT: When modifying the outputs of this builder (e.g. adding a new method or changing method signatures), make
@@ -337,7 +338,7 @@ class AbiContractBuilder(
         // Static function
         val providerParam = ParameterSpec.builder("provider", Middleware::class).build()
         val addressParam = ParameterSpec.builder("address", Address::class).build()
-        val valueParam = ParameterSpec.builder("value", BigInteger::class).build()
+        val valueParam = ParameterSpec.builder("value", BIG_INT_CLASS_NAME).build()
 
         val staticFunction = FunSpec.builder("receive")
             .addAnnotation(JvmStatic::class)
@@ -351,7 +352,7 @@ class AbiContractBuilder(
 
         // Instance function
         val instanceFunction = FunSpec.builder("receive")
-            .addParameter("value", BigInteger::class)
+            .addParameter("value", BIG_INT_CLASS_NAME)
             .addStatement("return Companion.receive(this.provider, this.address, value)")
             .returns(callClass)
             .build()
@@ -360,7 +361,7 @@ class AbiContractBuilder(
         val scopeFunction = if (generateMiddlewareExtensions) {
             FunSpec.builder("receive")
                 .addParameter("address", Address::class)
-                .addParameter("value", BigInteger::class)
+                .addParameter("value", BIG_INT_CLASS_NAME)
                 .addStatement(
                     "return %T.receive(provider, address, value)",
                     ClassName(packageName, contractName),
@@ -859,10 +860,10 @@ class AbiContractBuilder(
 
             // Determine how to handle the parameter type
             // LogFilter.topicN only supports Hash
-            // EventFilterBase adds overloads for BigInteger, Address, Bytes, and Boolean
+            // EventFilterBase adds overloads for BigInt, Address, Bytes, and Boolean
             when (param.apiType) {
                 else -> {
-                    // For all supported types (Hash, BigInteger, Address, Bytes, Boolean), use EventFilterBase overloads
+                    // For all supported types (Hash, BigInt, Address, Bytes, Boolean), use EventFilterBase overloads
                     // Single value method
                     filterBuilder.addFunction(
                         FunSpec.builder(methodName)

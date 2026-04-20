@@ -11,11 +11,11 @@ import io.ethers.abigen.getDeclaredErrors
 import io.ethers.abigen.nestedClass
 import io.ethers.abigen.parametrizedBy
 import io.ethers.abigen.typedNestedClass
+import io.ethers.bigint.BigInt
 import io.ethers.core.types.Bytes
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
-import java.math.BigInteger
 import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.full.primaryConstructor
 
@@ -50,7 +50,7 @@ class ErrorsTest : FunSpec({
                     ),
                 ),
                 listOf(
-                    BigInteger("123"),
+                    BigInt("123"),
                     listOf(
                         detailsStruct1,
                         detailsStruct2,
@@ -59,7 +59,7 @@ class ErrorsTest : FunSpec({
             )
 
             val expected = clazz.nestedClass("StructArgsError").primaryConstructor!!.call(
-                BigInteger("123"),
+                BigInt("123"),
                 listOf(detailsStruct1, detailsStruct2),
             )
 
@@ -110,7 +110,7 @@ class ErrorsTest : FunSpec({
                 ClassDescriptor(
                     "SimpleArgsError",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                         ArgDescriptor("done", Boolean::class),
                     ),
@@ -122,7 +122,7 @@ class ErrorsTest : FunSpec({
                             "status",
                             List::class.parametrizedBy(
                                 List::class.parametrizedBy(
-                                    List::class.parametrizedBy(BigInteger::class),
+                                    List::class.parametrizedBy(BigInt::class),
                                 ),
                             ),
                         ),
@@ -132,7 +132,7 @@ class ErrorsTest : FunSpec({
                 ClassDescriptor(
                     "StructArgsError",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("details", List::class.parametrizedBy(clazz.nestedClass("Details"))),
                     ),
                 ),

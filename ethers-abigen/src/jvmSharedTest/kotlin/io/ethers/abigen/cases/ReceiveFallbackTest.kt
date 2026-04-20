@@ -5,12 +5,12 @@ import io.ethers.abi.call.PayableFunctionCall
 import io.ethers.abi.call.ReceiveFunctionCall
 import io.ethers.abigen.AbigenCompiler
 import io.ethers.abigen.parametrizedBy
+import io.ethers.bigint.BigInt
 import io.ethers.core.types.Address
 import io.ethers.core.types.Bytes
 import io.ethers.providers.middleware.Middleware
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import java.math.BigInteger
 import kotlin.reflect.full.companionObject
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.declaredFunctions
@@ -26,7 +26,7 @@ class ReceiveFallbackTest : FunSpec({
             test("has payable receive function") {
                 val function = clazz.declaredFunctions.single { it.name == "receive" }
 
-                function.parameters[1].type shouldBe BigInteger::class.createType()
+                function.parameters[1].type shouldBe BigInt::class.createType()
                 function.returnType shouldBe ReceiveFunctionCall::class.createType()
             }
 
@@ -51,7 +51,7 @@ class ReceiveFallbackTest : FunSpec({
 
                 function.parameters[1].type shouldBe Middleware::class.createType()
                 function.parameters[2].type shouldBe Address::class.createType()
-                function.parameters[3].type shouldBe BigInteger::class.createType()
+                function.parameters[3].type shouldBe BigInt::class.createType()
                 function.returnType shouldBe ReceiveFunctionCall::class.createType()
             }
 

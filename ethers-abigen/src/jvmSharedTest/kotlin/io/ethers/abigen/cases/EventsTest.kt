@@ -10,6 +10,7 @@ import io.ethers.abigen.ClassDescriptor
 import io.ethers.abigen.getDeclaredEvents
 import io.ethers.abigen.nestedClass
 import io.ethers.abigen.typedNestedClass
+import io.ethers.bigint.BigInt
 import io.ethers.core.types.Address
 import io.ethers.core.types.Bytes
 import io.ethers.core.types.Hash
@@ -17,7 +18,6 @@ import io.ethers.core.types.Log
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
-import java.math.BigInteger
 import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.full.primaryConstructor
 
@@ -39,8 +39,8 @@ class EventsTest : FunSpec({
             val detailsClass = clazz.typedNestedClass<ContractStruct>("Details")
             val detailsStruct = detailsClass.primaryConstructor!!.call(false, Bytes("0x123456"))
 
-            val topic1 = BigInteger("1221452413")
-            val errorCode = BigInteger("123")
+            val topic1 = BigInt("1221452413")
+            val errorCode = BigInt("123")
             val logData = AbiCodec.encode(
                 listOf(
                     AbiType.UInt(16),
@@ -161,7 +161,7 @@ class EventsTest : FunSpec({
                 ClassDescriptor(
                     "AnonymousEvent",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", Bytes::class),
                         ArgDescriptor("log", Log::class),
                     ),
@@ -169,7 +169,7 @@ class EventsTest : FunSpec({
                 ClassDescriptor(
                     "ComplexIndexedArgsEvent",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", Bytes::class),
                         ArgDescriptor("log", Log::class),
                     ),
@@ -178,7 +178,7 @@ class EventsTest : FunSpec({
                 ClassDescriptor(
                     "IndexedAndDataArgsEvent",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("details", clazz.nestedClass("Details")),
                         ArgDescriptor("log", Log::class),
                     ),
@@ -186,8 +186,8 @@ class EventsTest : FunSpec({
                 ClassDescriptor(
                     "IndexedAndDataArgsEvent_1",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
-                        ArgDescriptor("errorCode", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
+                        ArgDescriptor("errorCode", BigInt::class),
                         ArgDescriptor("details", clazz.nestedClass("Details")),
                         ArgDescriptor("log", Log::class),
                     ),
@@ -200,7 +200,7 @@ class EventsTest : FunSpec({
                 ClassDescriptor(
                     "NoIndexedArgsEvent",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("msg", String::class),
                         ArgDescriptor("log", Log::class),
                     ),
@@ -208,7 +208,7 @@ class EventsTest : FunSpec({
                 ClassDescriptor(
                     "OnlyIndexedArgsEvent",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("done", Boolean::class),
                         ArgDescriptor("log", Log::class),
                     ),
@@ -216,7 +216,7 @@ class EventsTest : FunSpec({
                 ClassDescriptor(
                     "StructIndexedArgsEvent",
                     listOf(
-                        ArgDescriptor("status", BigInteger::class),
+                        ArgDescriptor("status", BigInt::class),
                         ArgDescriptor("details", Bytes::class),
                         ArgDescriptor("log", Log::class),
                     ),
