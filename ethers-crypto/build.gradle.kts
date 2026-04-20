@@ -25,6 +25,8 @@ kotlin {
     sourceSets {
         val jvmSharedMain by getting {
             dependencies {
+                api(project(":ethers-bigint"))
+
                 implementation(libs.kotlincrypto.hash.sha3)
                 implementation(libs.whyoleg.cryptography.core)
                 implementation(libs.whyoleg.cryptography.random)

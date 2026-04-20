@@ -1,6 +1,7 @@
 package io.ethers.crypto
 
-import java.math.BigInteger
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import fr.acinq.secp256k1.Secp256k1 as AcinqSecp256k1
 
 /**
@@ -47,14 +48,14 @@ object Secp256k1 {
      * @param s signature proof
      * @param recId index from 0 to 3 which indicates which of the 4 possible keys is the correct one
      */
-    fun recoverPublicKey(hash: ByteArray, r: BigInteger, s: BigInteger, recId: Long): ByteArray? {
+    fun recoverPublicKey(hash: ByteArray, r: BigInt, s: BigInt, recId: Long): ByteArray? {
         if (recId < 0) {
             throw IllegalArgumentException("Parameter 'recId' must be positive.")
         }
-        if (r < BigInteger.ZERO) {
+        if (r < BigInts.ZERO) {
             throw IllegalArgumentException("Parameter 'r' must be positive.")
         }
-        if (s < BigInteger.ZERO) {
+        if (s < BigInts.ZERO) {
             throw IllegalArgumentException("Parameter 's' must be positive.")
         }
 
@@ -69,11 +70,11 @@ object Secp256k1 {
         }
     }
 
-    private fun BigInteger.toByteArray32(): ByteArray {
+    private fun BigInt.toByteArray32(): ByteArray {
         return bigIntegerToByteArray32(this)
     }
 
-    private fun bigIntegerToByteArray32(value: BigInteger): ByteArray {
+    private fun bigIntegerToByteArray32(value: BigInt): ByteArray {
         val bytes = value.toByteArray()
         if (bytes.size > 33 || (bytes.size == 33 && bytes[0] != 0.toByte())) {
             throw IllegalArgumentException("Input is too large to put in byte array of size 32")
@@ -96,8 +97,8 @@ object Secp256k1 {
      * An ECDSA signature with [r], [s], and recovery id [v].
      * */
     data class ECDSASignature(
-        val r: BigInteger,
-        val s: BigInteger,
+        val r: BigInt,
+        val s: BigInt,
         val v: Long,
     )
 
@@ -127,7 +128,7 @@ object Secp256k1 {
             }
         }
 
-        constructor(privateKey: BigInteger) : this(bigIntegerToByteArray32(privateKey))
+        constructor(privateKey: BigInt) : this(bigIntegerToByteArray32(privateKey))
 
         /**
          * Sign [hash] message and return its signature as [r, s, v].
@@ -138,8 +139,8 @@ object Secp256k1 {
             val sig = AcinqSecp256k1.sign(hash, privateKey)
 
             // Extract r and s from the compact signature (64 bytes)
-            val r = BigInteger(1, sig.copyOfRange(0, 32))
-            val s = BigInteger(1, sig.copyOfRange(32, 64))
+            val r = BigInts.fromUnsignedBytes(sig, offset = 0, length = 32)
+            val s = BigInts.fromUnsignedBytes(sig, offset = 32, length = 32)
 
             // Determine recovery ID by trying each value and checking which recovers our public key
             val recId = findRecoveryId(hash, sig, publicKey)
