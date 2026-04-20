@@ -1,5 +1,6 @@
 package io.ethers.providers
 
+import io.ethers.bigint.BigInt
 import io.ethers.core.FastHex
 import io.ethers.core.Result
 import io.ethers.core.readBytes
@@ -11,7 +12,6 @@ import io.ethers.providers.bindings.AnvilInstance
 import io.ethers.providers.middleware.Middleware
 import io.ethers.providers.types.RpcCall
 import io.ethers.providers.types.RpcRequest
-import java.math.BigInteger
 
 /**
  * Provider implementation for interacting with an [Anvil](https://book.getfoundry.sh/reference/anvil/) node.
@@ -32,7 +32,7 @@ class AnvilProvider private constructor(
     /**
      * Modify the balance of an account.
      * */
-    fun setBalance(address: Address, balance: BigInteger): RpcRequest<Boolean, RpcError> {
+    fun setBalance(address: Address, balance: BigInt): RpcRequest<Boolean, RpcError> {
         return RpcCall(client, "anvil_setBalance", arrayOf(address, FastHex.encodeWithPrefix(balance)), { true })
     }
 
@@ -88,14 +88,14 @@ class AnvilProvider private constructor(
     /**
      * Set the minimum gas price for the node to accept.
      * */
-    fun setMinGasPrice(minGasPrice: BigInteger): RpcRequest<Boolean, RpcError> {
+    fun setMinGasPrice(minGasPrice: BigInt): RpcRequest<Boolean, RpcError> {
         return RpcCall(client, "anvil_setMinGasPrice", arrayOf(FastHex.encodeWithPrefix(minGasPrice)), { true })
     }
 
     /**
      * Set the base fee for the next block.
      * */
-    fun setNextBlockBaseFee(baseFee: BigInteger): RpcRequest<Boolean, RpcError> {
+    fun setNextBlockBaseFee(baseFee: BigInt): RpcRequest<Boolean, RpcError> {
         return RpcCall(client, "anvil_setNextBlockBaseFeePerGas", arrayOf(FastHex.encodeWithPrefix(baseFee)), { true })
     }
 
@@ -165,7 +165,7 @@ class AnvilProvider private constructor(
      * Snapshot the state of the blockchain at the current block, returning the snapshot id. Can be used to revert to
      * this state later using [revertSnapshot].
      * */
-    fun getSnapshot(): RpcRequest<BigInteger, RpcError> {
+    fun getSnapshot(): RpcRequest<BigInt, RpcError> {
         return RpcCall(client, "evm_snapshot", emptyArray<Any>(), { it.readHexBigInteger() })
     }
 
@@ -173,7 +173,7 @@ class AnvilProvider private constructor(
      * Revert the state of the blockchain to a previous snapshot. Can be used to revert to a previous state returned by
      * [getSnapshot].
      * */
-    fun revertSnapshot(snapshotId: BigInteger): RpcRequest<Boolean, RpcError> {
+    fun revertSnapshot(snapshotId: BigInt): RpcRequest<Boolean, RpcError> {
         return RpcCall(client, "evm_revert", arrayOf(snapshotId), { it.valueAsBoolean })
     }
 

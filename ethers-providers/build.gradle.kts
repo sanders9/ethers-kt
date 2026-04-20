@@ -10,6 +10,7 @@ kotlin {
                 api(libs.bundles.okhttp3)
                 api(libs.channelskt.core)
 
+                api(project(":ethers-bigint"))
                 api(project(":ethers-core"))
                 api(project(":ethers-signers"))
 

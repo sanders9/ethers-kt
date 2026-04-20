@@ -1,5 +1,8 @@
 package io.ethers.providers
 
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
+import io.ethers.bigint.toBigInt
 import io.ethers.core.FastHex
 import io.ethers.core.Jackson
 import io.ethers.core.Result
@@ -56,13 +59,12 @@ import io.ethers.providers.types.RpcRequest
 import io.ethers.providers.types.RpcSubscribe
 import io.ethers.providers.types.RpcSubscribeCall
 import io.ethers.providers.types.SuppliedRpcRequest
-import java.math.BigInteger
 
 @Suppress("MoveLambdaOutsideParentheses")
 class Provider(override val client: JsonRpcClient, override val chainId: Long) : Middleware {
     // it's ever only set to false if eth_fillTransaction is not supported, so it's fine if it's a bit racy
     private var supportsFillTransaction = true
-    private val fillTransactionFeeHistory = getFeeHistory(10, BlockId.LATEST, listOf("20".toBigInteger()))
+    private val fillTransactionFeeHistory = getFeeHistory(10, BlockId.LATEST, listOf("20".toBigInt()))
 
     override val inner: Middleware?
         get() = null
@@ -81,7 +83,7 @@ class Provider(override val client: JsonRpcClient, override val chainId: Long) :
         return RpcCall(client, "eth_blockNumber", EMPTY_ARRAY) { it.readHexLong() }
     }
 
-    override fun getBalance(address: Address, blockId: BlockId): RpcRequest<BigInteger, RpcError> {
+    override fun getBalance(address: Address, blockId: BlockId): RpcRequest<BigInt, RpcError> {
         return RpcCall(client, "eth_getBalance", arrayOf(address, blockId.id)) { it.readHexBigInteger() }
     }
 
@@ -196,22 +198,22 @@ class Provider(override val client: JsonRpcClient, override val chainId: Long) :
         return RpcCall(client, "eth_createAccessList", params, CreateAccessList::class.java)
     }
 
-    override fun getGasPrice(): RpcRequest<BigInteger, RpcError> {
+    override fun getGasPrice(): RpcRequest<BigInt, RpcError> {
         return RpcCall(client, "eth_gasPrice", EMPTY_ARRAY) { it.readHexBigInteger() }
     }
 
-    override fun getBlobBaseFee(): RpcRequest<BigInteger, RpcError> {
+    override fun getBlobBaseFee(): RpcRequest<BigInt, RpcError> {
         return RpcCall(client, "eth_blobBaseFee", EMPTY_ARRAY) { it.readHexBigInteger() }
     }
 
-    override fun getMaxPriorityFeePerGas(): RpcRequest<BigInteger, RpcError> {
+    override fun getMaxPriorityFeePerGas(): RpcRequest<BigInt, RpcError> {
         return RpcCall(client, "eth_maxPriorityFeePerGas", EMPTY_ARRAY) { it.readHexBigInteger() }
     }
 
     override fun getFeeHistory(
         blockCount: Long,
         lastBlockName: BlockId.Name,
-        rewardPercentiles: List<BigInteger>,
+        rewardPercentiles: List<BigInt>,
     ): RpcRequest<FeeHistory, RpcError> {
         val params = arrayOf(FastHex.encodeWithPrefix(blockCount), lastBlockName.id, rewardPercentiles)
         return RpcCall(client, "eth_feeHistory", params, FeeHistory::class.java)
@@ -220,7 +222,7 @@ class Provider(override val client: JsonRpcClient, override val chainId: Long) :
     override fun getFeeHistory(
         blockCount: Long,
         lastBlockNumber: BlockId.Number,
-        rewardPercentiles: List<BigInteger>,
+        rewardPercentiles: List<BigInt>,
     ): RpcRequest<FeeHistory, RpcError> {
         val params = arrayOf(FastHex.encodeWithPrefix(blockCount), lastBlockNumber.id, rewardPercentiles)
         return RpcCall(client, "eth_feeHistory", params, FeeHistory::class.java)
@@ -406,18 +408,18 @@ class Provider(override val client: JsonRpcClient, override val chainId: Long) :
             if (!txFeesSet) {
                 val rewards = feeHistory.rewards!!.mapNotNull {
                     val r = it.firstOrNull()
-                    if (r == null || r <= BigInteger.ZERO) null else r
+                    if (r == null || r <= BigInts.ZERO) null else r
                 }.sorted()
 
                 val medianReward = when {
-                    rewards.isEmpty() -> BigInteger.ONE
-                    rewards.size % 2 == 0 -> (rewards[rewards.size / 2 - 1] + rewards[rewards.size / 2]) / BigInteger.TWO
+                    rewards.isEmpty() -> BigInts.ONE
+                    rewards.size % 2 == 0 -> (rewards[rewards.size / 2 - 1] + rewards[rewards.size / 2]) / BigInts.TWO
                     else -> rewards[rewards.size / 2]
-                }.max(BigInteger.ONE)
+                }.max(BigInts.ONE)
 
                 when {
                     // if eip1559 is supported, fill its fields
-                    feeHistory.nextBaseFeePerGas > BigInteger.ZERO -> {
+                    feeHistory.nextBaseFeePerGas > BigInts.ZERO -> {
                         call.gasFeeCap(feeHistory.nextBaseFeePerGas + medianReward)
                         call.gasTipCap(medianReward)
                     }

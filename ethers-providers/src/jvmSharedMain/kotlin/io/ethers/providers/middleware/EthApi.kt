@@ -1,5 +1,6 @@
 package io.ethers.providers.middleware
 
+import io.ethers.bigint.BigInt
 import io.ethers.core.Result
 import io.ethers.core.types.Address
 import io.ethers.core.types.BlockId
@@ -25,7 +26,6 @@ import io.ethers.providers.types.FilterPoller
 import io.ethers.providers.types.PendingTransaction
 import io.ethers.providers.types.RpcRequest
 import io.ethers.providers.types.RpcSubscribe
-import java.math.BigInteger
 
 interface EthApi {
     /**
@@ -56,7 +56,7 @@ interface EthApi {
     /**
      * Get [address] balance at [blockId].
      */
-    fun getBalance(address: Address, blockId: BlockId): RpcRequest<BigInteger, RpcError>
+    fun getBalance(address: Address, blockId: BlockId): RpcRequest<BigInt, RpcError>
 
     /**
      * Get block header by [hash].
@@ -332,17 +332,17 @@ interface EthApi {
     /**
      * Get gas price suggestion for legacy transaction.
      */
-    fun getGasPrice(): RpcRequest<BigInteger, RpcError>
+    fun getGasPrice(): RpcRequest<BigInt, RpcError>
 
     /**
      * Returns the base fee per blob gas in wei.
      * */
-    fun getBlobBaseFee(): RpcRequest<BigInteger, RpcError>
+    fun getBlobBaseFee(): RpcRequest<BigInt, RpcError>
 
     /**
      * Get gas tip cap suggestion for dynamic fee transaction.
      */
-    fun getMaxPriorityFeePerGas(): RpcRequest<BigInteger, RpcError>
+    fun getMaxPriorityFeePerGas(): RpcRequest<BigInt, RpcError>
 
     /**
      * Get gas fee history for block range between [lastBlockName] and ([lastBlockName] - [blockCount] + 1).
@@ -368,7 +368,7 @@ interface EthApi {
     fun getFeeHistory(
         blockCount: Long,
         lastBlockName: BlockId.Name,
-        rewardPercentiles: List<BigInteger>,
+        rewardPercentiles: List<BigInt>,
     ): RpcRequest<FeeHistory, RpcError>
 
     /**
@@ -380,7 +380,7 @@ interface EthApi {
     fun getFeeHistory(
         blockCount: Long,
         lastBlockNumber: Long,
-        rewardPercentiles: List<BigInteger>,
+        rewardPercentiles: List<BigInt>,
     ): RpcRequest<FeeHistory, RpcError> = getFeeHistory(blockCount, BlockId.Number(lastBlockNumber), rewardPercentiles)
 
     /**
@@ -392,7 +392,7 @@ interface EthApi {
     fun getFeeHistory(
         blockCount: Long,
         lastBlockNumber: BlockId.Number,
-        rewardPercentiles: List<BigInteger>,
+        rewardPercentiles: List<BigInt>,
     ): RpcRequest<FeeHistory, RpcError>
 
     /**

@@ -14,8 +14,8 @@ import io.ethers.providers.Provider
  * Example:
  * ```kotlin
  * class GasOracleMiddleware(override val inner: Middleware) : Middleware by inner {
- *     override fun getGasPrice(): RpcRequest<BigInteger, RpcError> {
- *         return inner.getGasPrice().map { it * BigInteger.TWO }
+ *     override fun getGasPrice(): RpcRequest<BigInt, RpcError> {
+ *         return inner.getGasPrice().map { it * BigInts.TWO }
  *     }
  * }
  * ```
