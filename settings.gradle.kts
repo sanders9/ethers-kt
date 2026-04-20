@@ -1,6 +1,7 @@
 rootProject.name = "ethers-kt"
 
 include("ethers-bom")
+include("ethers-bigint")
 include("ethers-core")
 include("ethers-providers")
 include("ethers-rlp")
