@@ -8,6 +8,8 @@ kotlin {
     sourceSets {
         val jvmSharedMain by getting {
             dependencies {
+                api(project(":ethers-bigint"))
+
                 implementation(libs.ditchoom.buffer)
             }
         }

@@ -3,7 +3,8 @@ package io.ethers.rlp
 import com.ditchoom.buffer.BufferFactory
 import com.ditchoom.buffer.Default
 import com.ditchoom.buffer.PlatformBuffer
-import java.math.BigInteger
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import kotlin.math.max
 
 /**
@@ -147,14 +148,14 @@ class RlpEncoder @JvmOverloads constructor(
         return this
     }
 
-    fun encode(value: BigInteger?): RlpEncoder {
-        if (value == null || value == BigInteger.ZERO) {
+    fun encode(value: BigInt?): RlpEncoder {
+        if (value == null || value == BigInts.ZERO) {
             ensureCapacity(1)
             buffer.writeByte(RLP_NULL.toByte())
             return this
         }
 
-        if (value < BigInteger.ZERO) {
+        if (value < BigInts.ZERO) {
             throw IllegalArgumentException("Negative values are not supported: $value")
         }
 
@@ -297,7 +298,7 @@ class RlpEncoder @JvmOverloads constructor(
 
     companion object {
         private const val BUFFER_GROWTH_FACTOR = 1.5
-        private val RLP_STRING_SHORT_BIGINT = BigInteger.valueOf(0x80)
+        private val RLP_STRING_SHORT_BIGINT = BigInts.valueOf(0x80)
 
         /**
          * Return the size of the RLP encoding of [value], without actually encoding it.
@@ -311,16 +312,16 @@ class RlpEncoder @JvmOverloads constructor(
          * Return the size of the RLP encoding of [value], without actually encoding it.
          * */
         @JvmStatic
-        fun sizeOf(value: BigInteger?): Int {
+        fun sizeOf(value: BigInt?): Int {
             if (value == null) {
                 return 1
             }
 
-            if (value < BigInteger.ZERO) {
+            if (value < BigInts.ZERO) {
                 throw IllegalArgumentException("Negative values are not supported: $value")
             }
 
-            if (value == BigInteger.ZERO) {
+            if (value == BigInts.ZERO) {
                 return 1
             }
 

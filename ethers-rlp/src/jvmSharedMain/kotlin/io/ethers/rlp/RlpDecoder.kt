@@ -1,6 +1,7 @@
 package io.ethers.rlp
 
-import java.math.BigInteger
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -224,23 +225,23 @@ class RlpDecoder(private val array: ByteArray) {
     }
 
     /**
-     * Decode the element as a [BigInteger].
+     * Decode the element as a [BigInt].
      *
-     * @return decoded [BigInteger].
-     * @throws RlpDecoderException if element is not a [BigInteger].
+     * @return decoded [BigInt].
+     * @throws RlpDecoderException if element is not a [BigInt].
      * */
-    fun decodeBigInteger(): BigInteger {
+    fun decodeBigInteger(): BigInt {
         val ret = decodeBigIntegerOrNull()
         error?.throwDecoderException()
         return ret!!
     }
 
     /**
-     * Decode the element as a [BigInteger], or `null` if it could not be decoded.
+     * Decode the element as a [BigInt], or `null` if it could not be decoded.
      *
-     * @return decoded [BigInteger], or `null` if the element could not be decoded.
+     * @return decoded [BigInt], or `null` if the element could not be decoded.
      * */
-    fun decodeBigIntegerOrNull(): BigInteger? {
+    fun decodeBigIntegerOrNull(): BigInt? {
         return getNextElement(false, null, ::takeBigInteger)
     }
 
@@ -435,10 +436,10 @@ class RlpDecoder(private val array: ByteArray) {
         return array[position].toUByte().toInt()
     }
 
-    private fun takeBigInteger(size: Int): BigInteger {
-        if (size == 0) return BigInteger.ZERO
+    private fun takeBigInteger(size: Int): BigInt {
+        if (size == 0) return BigInts.ZERO
 
-        return BigInteger(1, takeByteArray(size))
+        return BigInts.fromUnsignedBytes(takeByteArray(size))
     }
 
     private fun takeLong(size: Int): Long {
