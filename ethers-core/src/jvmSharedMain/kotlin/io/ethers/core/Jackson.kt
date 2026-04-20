@@ -14,8 +14,9 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import com.fasterxml.jackson.databind.json.JsonMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import java.io.InputStream
-import java.math.BigInteger
 
 /**
  * Static [JsonMapper] with default settings. Instance should be reused. Customized reading/writing can be achieved
@@ -100,21 +101,21 @@ class LongHexDeserializer : JsonDeserializer<Long>() {
 }
 
 /**
- * Serialize and deserialize BigInteger as hex string with 0x prefix.
+ * Serialize and deserialize BigInt as hex string with 0x prefix.
  * */
 @JacksonAnnotationsInside
 @JsonSerialize(using = BigIntegerHexSerializer::class)
 @JsonDeserialize(using = BigIntegerHexDeserializer::class)
 annotation class JsonHexBigInteger
 
-class BigIntegerHexSerializer : JsonSerializer<BigInteger>() {
-    override fun serialize(value: BigInteger, gen: JsonGenerator, serializers: SerializerProvider) {
+class BigIntegerHexSerializer : JsonSerializer<BigInt>() {
+    override fun serialize(value: BigInt, gen: JsonGenerator, serializers: SerializerProvider) {
         gen.writeString(FastHex.encodeWithPrefix(value))
     }
 }
 
-class BigIntegerHexDeserializer : JsonDeserializer<BigInteger>() {
-    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): BigInteger {
+class BigIntegerHexDeserializer : JsonDeserializer<BigInt>() {
+    override fun deserialize(p: JsonParser, ctxt: DeserializationContext): BigInt {
         return p.readHexBigInteger()
     }
 }

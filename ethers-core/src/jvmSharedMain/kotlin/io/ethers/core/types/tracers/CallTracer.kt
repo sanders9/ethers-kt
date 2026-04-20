@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.forEachObjectField
 import io.ethers.core.json.JsonElement
 import io.ethers.core.readAddress
@@ -19,7 +21,6 @@ import io.ethers.core.types.Address
 import io.ethers.core.types.Bytes
 import io.ethers.core.types.Hash
 import io.ethers.core.types.Log
-import java.math.BigInteger
 import kotlin.reflect.KClass
 
 /**
@@ -59,7 +60,7 @@ data class CallTracer(
         val revertReason: String? = null,
         val calls: List<CallFrame>? = null,
         val logs: List<CallLog>? = null,
-        val value: BigInteger? = null,
+        val value: BigInt? = null,
         val otherFields: Map<String, JsonElement> = emptyMap(),
     ) {
         /**
@@ -190,7 +191,7 @@ data class CallTracer(
             var revertReason: String? = null
             var calls: List<CallFrame>? = null
             var logs: List<CallLog>? = null
-            var value: BigInteger? = null
+            var value: BigInt? = null
             var otherFields: MutableMap<String, JsonElement>? = null
             p.forEachObjectField { name ->
                 when (name) {

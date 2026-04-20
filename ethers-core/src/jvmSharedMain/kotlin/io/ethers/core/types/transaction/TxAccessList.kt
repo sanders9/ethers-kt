@@ -1,5 +1,7 @@
 package io.ethers.core.types.transaction
 
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.types.AccessList
 import io.ethers.core.types.Address
 import io.ethers.core.types.Authorization
@@ -9,7 +11,6 @@ import io.ethers.core.types.Signature
 import io.ethers.rlp.RlpDecodable
 import io.ethers.rlp.RlpDecoder
 import io.ethers.rlp.RlpEncoder
-import java.math.BigInteger
 
 /**
  * EIP-2930 transaction with optional access list.
@@ -18,10 +19,10 @@ import java.math.BigInteger
  * */
 data class TxAccessList(
     override val to: Address?,
-    override val value: BigInteger,
+    override val value: BigInt,
     override val nonce: Long,
     override val gas: Long,
-    override val gasPrice: BigInteger,
+    override val gasPrice: BigInt,
     override val data: Bytes?,
     override val chainId: Long,
     override val accessList: List<AccessList.Item>,
@@ -32,16 +33,16 @@ data class TxAccessList(
         }
     }
 
-    override val gasTipCap: BigInteger
+    override val gasTipCap: BigInt
         get() = gasPrice
 
-    override val gasFeeCap: BigInteger
+    override val gasFeeCap: BigInt
         get() = gasPrice
 
     override val type: TxType
         get() = TxType.AccessList
 
-    override val blobFeeCap: BigInteger?
+    override val blobFeeCap: BigInt?
         get() = null
 
     override val blobVersionedHashes: List<Hash>?

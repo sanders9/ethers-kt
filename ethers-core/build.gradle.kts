@@ -9,6 +9,7 @@ kotlin {
     sourceSets {
         val jvmSharedMain by getting {
             dependencies {
+                api(project(":ethers-bigint"))
                 api(project(":ethers-rlp"))
                 api(project(":ethers-crypto"))
 

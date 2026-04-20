@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.FastHex
 import io.ethers.core.forEachObjectField
 import io.ethers.core.handleUnknownField
@@ -21,7 +23,6 @@ import io.ethers.rlp.RlpDecodable
 import io.ethers.rlp.RlpDecoder
 import io.ethers.rlp.RlpEncodable
 import io.ethers.rlp.RlpEncoder
-import java.math.BigInteger
 
 /**
  * EIP-7702 Authorization structure for SetCode transactions.
@@ -34,8 +35,8 @@ data class Authorization(
     val address: Address,
     val nonce: Long,
     val yParity: Long,
-    val r: BigInteger,
-    val s: BigInteger,
+    val r: BigInt,
+    val s: BigInt,
 ) : RlpEncodable {
     init {
         require(chainId == 0L || chainId > 0L) { "chainId must be 0 or positive" }
@@ -118,7 +119,7 @@ data class Authorization(
         /**
          * Half of the secp256k1 curve order, used to validate s values.
          */
-        private val SECP256K1N_HALF = BigInteger("7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0", 16)
+        private val SECP256K1N_HALF = BigInt("7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0", 16)
 
         @JvmStatic
         override fun rlpDecode(rlp: RlpDecoder): Authorization? {
@@ -159,8 +160,8 @@ private class AuthorizationDeserializer : JsonDeserializer<Authorization>() {
         lateinit var address: Address
         var nonce = 0L
         var yParity = 0L
-        lateinit var r: BigInteger
-        lateinit var s: BigInteger
+        lateinit var r: BigInt
+        lateinit var s: BigInt
 
         p.forEachObjectField { field ->
             when (field) {

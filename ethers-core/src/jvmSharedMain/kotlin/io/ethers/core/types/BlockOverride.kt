@@ -4,8 +4,9 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.FastHex
-import java.math.BigInteger
 
 /**
  * Block override, which can be used to override certain fields of a block, such as the block number, timestamp,
@@ -27,9 +28,9 @@ class BlockOverride() {
     var number: Long = -1L
         @JvmSynthetic set
 
-    var difficulty: BigInteger? = null
+    var difficulty: BigInt? = null
         @JvmSynthetic set(value) {
-            require(value == null || value >= BigInteger.ZERO) { "Difficulty must be non-negative" }
+            require(value == null || value >= BigInts.ZERO) { "Difficulty must be non-negative" }
             field = value
         }
 
@@ -45,9 +46,9 @@ class BlockOverride() {
     var random: Hash? = null
         @JvmSynthetic set
 
-    var baseFee: BigInteger? = null
+    var baseFee: BigInt? = null
         @JvmSynthetic set(value) {
-            require(value == null || value >= BigInteger.ZERO) { "BaseFee must be non-negative" }
+            require(value == null || value >= BigInts.ZERO) { "BaseFee must be non-negative" }
             field = value
         }
 
@@ -62,7 +63,7 @@ class BlockOverride() {
     /**
      * Set the block difficulty.
      * */
-    fun difficulty(difficulty: BigInteger): BlockOverride {
+    fun difficulty(difficulty: BigInt): BlockOverride {
         this.difficulty = difficulty
         return this
     }
@@ -102,7 +103,7 @@ class BlockOverride() {
     /**
      * Set the block base fee.
      * */
-    fun baseFee(baseFee: BigInteger?): BlockOverride {
+    fun baseFee(baseFee: BigInt?): BlockOverride {
         this.baseFee = baseFee
         return this
     }

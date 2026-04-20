@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.forEachObjectField
 import io.ethers.core.readBytes
 import io.ethers.core.readHash
@@ -14,7 +16,6 @@ import io.ethers.core.types.Address
 import io.ethers.core.types.Bytes
 import io.ethers.core.types.Hash
 import io.ethers.core.types.StateOverride
-import java.math.BigInteger
 import kotlin.reflect.KClass
 
 /**
@@ -77,7 +78,7 @@ data class PrestateTracer(val diffMode: Boolean) : Tracer<PrestateTracer.Result>
                     poststate[address] == null -> ret[address] = AccountOverride {
                         nonce = 0
                         code = Bytes.EMPTY
-                        balance = BigInteger.ZERO
+                        balance = BigInts.ZERO
                         state = emptyMap()
                     }
 
@@ -124,7 +125,7 @@ data class PrestateTracer(val diffMode: Boolean) : Tracer<PrestateTracer.Result>
 
     data class Account(
         val nonce: Long = -1L,
-        val balance: BigInteger? = null,
+        val balance: BigInt? = null,
         val code: Bytes? = null,
         val storage: Map<Hash, Hash>? = null,
     )
@@ -174,7 +175,7 @@ data class PrestateTracer(val diffMode: Boolean) : Tracer<PrestateTracer.Result>
 
         private fun JsonParser.readAccount(): Account {
             var nonce: Long = -1L
-            var balance: BigInteger? = null
+            var balance: BigInt? = null
             var code: Bytes? = null
             var storage: Map<Hash, Hash>? = null
             forEachObjectField {

@@ -1,5 +1,7 @@
 package io.ethers.core.types
 
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.FastHex
 import io.ethers.core.Result
 import io.ethers.core.failure
@@ -10,11 +12,10 @@ import io.ethers.rlp.RlpDecodable
 import io.ethers.rlp.RlpDecoder
 import io.ethers.rlp.RlpEncodable
 import io.ethers.rlp.RlpEncoder
-import java.math.BigInteger
 
 class Signature(
-    val r: BigInteger,
-    val s: BigInteger,
+    val r: BigInt,
+    val s: BigInt,
     v: Long,
 ) : RlpEncodable {
     var v = v
@@ -107,7 +108,7 @@ class Signature(
     fun toByteArray(): ByteArray {
         val ret = ByteArray(65)
 
-        // BigInteger is a signed value, and the first byte is used a sign bit.
+        // BigInt is a signed value, and the first byte is used a sign bit.
         // If the array is larger than 32 bytes, we need to remove the sign bit.
         val rBytes = r.toByteArray()
         rBytes.copyInto(
@@ -188,8 +189,8 @@ class Signature(
                 return failure(InvalidSignatureError("Invalid signature length: ${byteArray.size}"))
             }
 
-            val r = BigInteger(1, byteArray, 0, 32)
-            val s = BigInteger(1, byteArray, 32, 32)
+            val r = BigInts.fromUnsignedBytes(byteArray, 0, 32)
+            val s = BigInts.fromUnsignedBytes(byteArray, 32, 32)
             val v = byteArray[64].toLong()
             return success(Signature(r, s, v))
         }

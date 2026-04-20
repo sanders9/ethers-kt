@@ -3,11 +3,12 @@ package io.ethers.core
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.types.Address
 import io.ethers.core.types.Bloom
 import io.ethers.core.types.Bytes
 import io.ethers.core.types.Hash
-import java.math.BigInteger
 
 /**
  * Check if end of JSON object is reached.
@@ -133,16 +134,16 @@ fun JsonParser.readBloom() = Bloom(readHexByteArray())
 fun JsonParser.readHash() = Hash(readHexByteArray())
 
 /**
- * Read current token in hex as to unsigned [BigInteger].
+ * Read current token in hex as to unsigned [BigInt].
  */
-fun JsonParser.readHexBigInteger(): BigInteger {
+fun JsonParser.readHexBigInteger(): BigInt {
     val decoded = readHexByteArray()
     if (decoded.isEmpty()) {
-        return BigInteger.ZERO
+        return BigInts.ZERO
     }
 
     // hex numbers are unsigned
-    return BigInteger(1, decoded)
+    return BigInts.fromUnsignedBytes(decoded)
 }
 
 /**

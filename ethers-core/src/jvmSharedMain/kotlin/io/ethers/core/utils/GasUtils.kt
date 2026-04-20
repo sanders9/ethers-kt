@@ -1,7 +1,8 @@
 package io.ethers.core.utils
 
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.utils.GasUtils.getEffectiveGasTip
-import java.math.BigInteger
 
 object GasUtils {
     /**
@@ -9,7 +10,7 @@ object GasUtils {
      * */
     @JvmStatic
     @Suppress("UnnecessaryVariable")
-    fun getEffectiveGasTip(baseFee: BigInteger, gasTipCap: BigInteger, gasFeeCap: BigInteger): BigInteger {
+    fun getEffectiveGasTip(baseFee: BigInt, gasTipCap: BigInt, gasFeeCap: BigInt): BigInt {
         val possibleTip = gasFeeCap - baseFee
         val maxTip = gasTipCap
 
@@ -20,7 +21,7 @@ object GasUtils {
      * Get how much will be paid as transaction gas price. This is the sum of [baseFee] and [getEffectiveGasTip].
      * */
     @JvmStatic
-    fun getEffectiveGasPrice(baseFee: BigInteger, gasTipCap: BigInteger, gasFeeCap: BigInteger): BigInteger {
+    fun getEffectiveGasPrice(baseFee: BigInt, gasTipCap: BigInt, gasFeeCap: BigInt): BigInt {
         return baseFee + getEffectiveGasTip(baseFee, gasTipCap, gasFeeCap)
     }
 }

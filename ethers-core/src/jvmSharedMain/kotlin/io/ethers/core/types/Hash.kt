@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import io.ethers.bigint.BigInt
 import io.ethers.core.FastHex
 import io.ethers.core.HexDecodingError
 import io.ethers.core.Result
@@ -18,7 +19,6 @@ import io.ethers.rlp.RlpDecodable
 import io.ethers.rlp.RlpDecoder
 import io.ethers.rlp.RlpEncodable
 import io.ethers.rlp.RlpEncoder
-import java.math.BigInteger
 
 /**
  * 32-byte hash.
@@ -28,7 +28,7 @@ import java.math.BigInteger
 class Hash(private val value: ByteArray) : RlpEncodable {
     constructor(value: CharSequence) : this(FastHex.decode(value))
     constructor(value: Address) : this(value.asByteArray().copyInto(ByteArray(32), 12))
-    constructor(value: BigInteger) : this(bigIntegerToBytes(value))
+    constructor(value: BigInt) : this(bigIntegerToBytes(value))
 
     // cache of hex string for faster serialization if serializing the same instance multiple times
     private var stringCache: String? = null
@@ -126,11 +126,11 @@ class Hash(private val value: ByteArray) : RlpEncodable {
         }
 
         /**
-         * Convert [BigInteger] to [ByteArray] of length 32, padded from start with zeros if needed.
+         * Convert [BigInt] to [ByteArray] of length 32, padded from start with zeros if needed.
          *
-         * @throws [IllegalArgumentException] if [BigInteger] has more than 256 bits.
+         * @throws [IllegalArgumentException] if [BigInt] has more than 256 bits.
          * */
-        private fun bigIntegerToBytes(value: BigInteger): ByteArray {
+        private fun bigIntegerToBytes(value: BigInt): ByteArray {
             val bytes = value.toByteArray()
             if (bytes.size > 33 || (bytes.size == 33 && bytes[0].toInt() != 0)) {
                 throw IllegalArgumentException("Provided value has more than 256 bits: $value")

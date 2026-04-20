@@ -16,8 +16,9 @@
 */
 package io.ethers.core
 
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.FastHex.decode
-import java.math.BigInteger
 
 /**
  * Hexadecimal codec with safe-by-default and unsafe encoding/decoding support.
@@ -73,11 +74,11 @@ object FastHex {
     }
 
     /**
-     * Encode [BigInteger] as hex string prefixed with '0x', skipping the leading zero.
+     * Encode [BigInt] as hex string prefixed with '0x', skipping the leading zero.
      * */
     @JvmStatic
-    fun encodeWithPrefix(value: BigInteger): String {
-        if (value == BigInteger.ZERO) return "0x0"
+    fun encodeWithPrefix(value: BigInt): String {
+        if (value == BigInts.ZERO) return "0x0"
         var byteIdx = 0
         val arr = value.toByteArray()
         return encodeNumberWithPrefix(arr.size * 8) { arr[byteIdx++].toInt() and 0xff }

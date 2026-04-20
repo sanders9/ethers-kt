@@ -1,10 +1,11 @@
 package io.ethers.core.utils
 
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.utils.EthUnit.Companion.ETHER
 import io.ethers.core.utils.EthUnit.Companion.GWEI
 import io.ethers.core.utils.EthUnit.Companion.WEI
 import java.math.BigDecimal
-import java.math.BigInteger
 import java.math.RoundingMode
 
 /**
@@ -34,7 +35,7 @@ data class EthUnit(val decimals: Int) {
     /**
      * Convert an [amount] of the current unit to [WEI], truncating values less than 1 Wei.
      */
-    fun toWei(amount: BigInteger): BigDecimal = this.convert(amount, WEI)
+    fun toWei(amount: BigInt): BigDecimal = this.convert(amount, WEI)
 
     /**
      * Convert an [amount] of the current unit to [WEI], truncating values less than 1 Wei.
@@ -64,7 +65,7 @@ data class EthUnit(val decimals: Int) {
     /**
      * Convert an [amount] of the current unit to [GWEI], truncating values less than 1 Wei.
      */
-    fun toGwei(amount: BigInteger): BigDecimal = this.convert(amount, GWEI)
+    fun toGwei(amount: BigInt): BigDecimal = this.convert(amount, GWEI)
 
     /**
      * Convert an [amount] of the current unit to [GWEI], truncating values less than 1 Wei.
@@ -94,7 +95,7 @@ data class EthUnit(val decimals: Int) {
     /**
      * Convert an [amount] of the current unit to [ETHER], truncating values less than 1 Wei.
      */
-    fun toEther(amount: BigInteger): BigDecimal = this.convert(amount, ETHER)
+    fun toEther(amount: BigInt): BigDecimal = this.convert(amount, ETHER)
 
     /**
      * Convert an [amount] of the current unit to [ETHER], truncating values less than 1 Wei.
@@ -124,7 +125,7 @@ data class EthUnit(val decimals: Int) {
     /**
      * Convert an [amount] of Wei to the current unit, truncating values less than 1 Wei.
      */
-    fun fromWei(amount: BigInteger): BigDecimal = WEI.convert(amount, this)
+    fun fromWei(amount: BigInt): BigDecimal = WEI.convert(amount, this)
 
     /**
      * Convert an [amount] of Wei to the current unit, truncating values less than 1 Wei.
@@ -154,7 +155,7 @@ data class EthUnit(val decimals: Int) {
     /**
      * Convert an [amount] of [GWEI] to the current unit, truncating values less than 1 Wei.
      */
-    fun fromGwei(amount: BigInteger): BigDecimal = GWEI.convert(amount, this)
+    fun fromGwei(amount: BigInt): BigDecimal = GWEI.convert(amount, this)
 
     /**
      * Convert an [amount] of [GWEI] to the current unit, truncating values less than 1 Wei.
@@ -184,7 +185,7 @@ data class EthUnit(val decimals: Int) {
     /**
      * Convert an [amount] of [ETHER] to the current unit, truncating values less than 1 Wei.
      */
-    fun fromEther(amount: BigInteger): BigDecimal = ETHER.convert(amount, this)
+    fun fromEther(amount: BigInt): BigDecimal = ETHER.convert(amount, this)
 
     /**
      * Convert an [amount] of [ETHER] to the current unit, truncating values less than 1 Wei.
@@ -222,7 +223,7 @@ data class EthUnit(val decimals: Int) {
     /**
      * Convert an [amount] from the current unit to [toUnit], truncating values less than 1 Wei.
      */
-    fun convert(amount: BigInteger, toUnit: EthUnit): BigDecimal {
+    fun convert(amount: BigInt, toUnit: EthUnit): BigDecimal {
         return amount.toBigDecimal(toUnit.decimals - this.decimals)
     }
 

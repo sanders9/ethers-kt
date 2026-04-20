@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.FastHex
 import io.ethers.core.types.transaction.ChainId
 import io.ethers.core.types.transaction.TransactionUnsigned
@@ -11,7 +13,6 @@ import io.ethers.core.types.transaction.TxAccessList
 import io.ethers.core.types.transaction.TxBlob
 import io.ethers.core.types.transaction.TxDynamicFee
 import io.ethers.core.types.transaction.TxLegacy
-import java.math.BigInteger
 
 @JsonSerialize(using = CallRequestSerializer::class)
 class CallRequest() : IntoCallRequest {
@@ -43,27 +44,27 @@ class CallRequest() : IntoCallRequest {
     var gas: Long = -1L
         @JvmSynthetic set
 
-    var gasPrice: BigInteger? = null
+    var gasPrice: BigInt? = null
         @JvmSynthetic set(value) {
-            require(value == null || value >= BigInteger.ZERO) { "GasPrice must be non-negative" }
+            require(value == null || value >= BigInts.ZERO) { "GasPrice must be non-negative" }
             field = value
         }
 
-    var gasFeeCap: BigInteger? = null
+    var gasFeeCap: BigInt? = null
         @JvmSynthetic set(value) {
-            require(value == null || value >= BigInteger.ZERO) { "GasFeeCap must be non-negative" }
+            require(value == null || value >= BigInts.ZERO) { "GasFeeCap must be non-negative" }
             field = value
         }
 
-    var gasTipCap: BigInteger? = null
+    var gasTipCap: BigInt? = null
         @JvmSynthetic set(value) {
-            require(value == null || value >= BigInteger.ZERO) { "GasTipCap must be non-negative" }
+            require(value == null || value >= BigInts.ZERO) { "GasTipCap must be non-negative" }
             field = value
         }
 
-    var value: BigInteger? = null
+    var value: BigInt? = null
         @JvmSynthetic set(value) {
-            require(value == null || value >= BigInteger.ZERO) { "Value must be non-negative" }
+            require(value == null || value >= BigInts.ZERO) { "Value must be non-negative" }
             field = value
         }
 
@@ -79,9 +80,9 @@ class CallRequest() : IntoCallRequest {
     var chainId: Long = -1L
         @JvmSynthetic set
 
-    var blobFeeCap: BigInteger? = null
+    var blobFeeCap: BigInt? = null
         @JvmSynthetic set(value) {
-            require(value == null || value >= BigInteger.ZERO) { "BlobFeeCap must be non-negative" }
+            require(value == null || value >= BigInts.ZERO) { "BlobFeeCap must be non-negative" }
             field = value
         }
 
@@ -91,15 +92,15 @@ class CallRequest() : IntoCallRequest {
     fun from(from: Address?) = apply { this.from = from }
     fun to(to: Address?) = apply { this.to = to }
     fun gas(gas: Long) = apply { this.gas = gas }
-    fun gasPrice(gasPrice: BigInteger?) = apply { this.gasPrice = gasPrice }
-    fun gasFeeCap(gasFeeCap: BigInteger?) = apply { this.gasFeeCap = gasFeeCap }
-    fun gasTipCap(gasTipCap: BigInteger?) = apply { this.gasTipCap = gasTipCap }
-    fun value(value: BigInteger?) = apply { this.value = value }
+    fun gasPrice(gasPrice: BigInt?) = apply { this.gasPrice = gasPrice }
+    fun gasFeeCap(gasFeeCap: BigInt?) = apply { this.gasFeeCap = gasFeeCap }
+    fun gasTipCap(gasTipCap: BigInt?) = apply { this.gasTipCap = gasTipCap }
+    fun value(value: BigInt?) = apply { this.value = value }
     fun nonce(nonce: Long) = apply { this.nonce = nonce }
     fun data(data: Bytes?) = apply { this.data = data }
     fun accessList(accessList: List<AccessList.Item>) = apply { this.accessList = accessList }
     fun chainId(chainId: Long) = apply { this.chainId = chainId }
-    fun blobFeeCap(blobFeeCap: BigInteger?) = apply { this.blobFeeCap = blobFeeCap }
+    fun blobFeeCap(blobFeeCap: BigInt?) = apply { this.blobFeeCap = blobFeeCap }
     fun blobVersionedHashes(blobVersionedHashes: List<Hash>?) = apply { this.blobVersionedHashes = blobVersionedHashes }
 
     /**
@@ -124,7 +125,7 @@ class CallRequest() : IntoCallRequest {
 
                 return TxBlob(
                     to = to!!,
-                    value = value ?: BigInteger.ZERO,
+                    value = value ?: BigInts.ZERO,
                     nonce = nonce,
                     gas = gas,
                     gasFeeCap = gasFeeCap!!,
@@ -144,7 +145,7 @@ class CallRequest() : IntoCallRequest {
 
                 return TxDynamicFee(
                     to = to,
-                    value = value ?: BigInteger.ZERO,
+                    value = value ?: BigInts.ZERO,
                     nonce = nonce,
                     gas = gas,
                     gasFeeCap = gasFeeCap!!,
@@ -162,7 +163,7 @@ class CallRequest() : IntoCallRequest {
 
                 return TxAccessList(
                     to = to,
-                    value = value ?: BigInteger.ZERO,
+                    value = value ?: BigInts.ZERO,
                     nonce = nonce,
                     gas = gas,
                     gasPrice = gasPrice!!,
@@ -175,7 +176,7 @@ class CallRequest() : IntoCallRequest {
             gasPrice != null && accessList.isEmpty() -> {
                 return TxLegacy(
                     to = to,
-                    value = value ?: BigInteger.ZERO,
+                    value = value ?: BigInts.ZERO,
                     nonce = nonce,
                     gas = gas,
                     gasPrice = gasPrice!!,

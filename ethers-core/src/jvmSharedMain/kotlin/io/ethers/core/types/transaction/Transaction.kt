@@ -1,5 +1,7 @@
 package io.ethers.core.types.transaction
 
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.types.AccessList
 import io.ethers.core.types.Address
 import io.ethers.core.types.Authorization
@@ -9,7 +11,6 @@ import io.ethers.core.types.Hash
 import io.ethers.core.types.IntoCallRequest
 import io.ethers.core.types.Signature
 import io.ethers.core.utils.GasUtils
-import java.math.BigInteger
 
 /**
  * A [Transaction] with recovered sender address ([from]) and [hash].
@@ -28,18 +29,18 @@ interface TransactionRecovered : Transaction {
  * */
 interface Transaction : IntoCallRequest {
     val to: Address?
-    val value: BigInteger
+    val value: BigInt
     val nonce: Long
     val gas: Long
-    val gasPrice: BigInteger
-    val gasTipCap: BigInteger
-    val gasFeeCap: BigInteger
+    val gasPrice: BigInt
+    val gasTipCap: BigInt
+    val gasFeeCap: BigInt
     val data: Bytes?
     val chainId: Long
     val accessList: List<AccessList.Item>
     val authorizationList: List<Authorization>?
     val type: TxType
-    val blobFeeCap: BigInteger?
+    val blobFeeCap: BigInt?
     val blobVersionedHashes: List<Hash>?
 
     val blobGas: Long
@@ -48,7 +49,7 @@ interface Transaction : IntoCallRequest {
     /**
      * Get how much will be paid as transaction gas tip based on [baseFee], [gasTipCap], and [gasFeeCap] constraints.
      * */
-    fun getEffectiveGasTip(baseFee: BigInteger): BigInteger {
+    fun getEffectiveGasTip(baseFee: BigInt): BigInt {
         return GasUtils.getEffectiveGasTip(baseFee, gasTipCap, gasFeeCap)
     }
 
@@ -56,7 +57,7 @@ interface Transaction : IntoCallRequest {
      * Get how much will be paid as transaction gas price. This is the sum of [baseFee] and
      * [GasUtils.getEffectiveGasTip].
      * */
-    fun getEffectiveGasPrice(baseFee: BigInteger): BigInteger {
+    fun getEffectiveGasPrice(baseFee: BigInt): BigInt {
         return GasUtils.getEffectiveGasPrice(baseFee, gasTipCap, gasFeeCap)
     }
 

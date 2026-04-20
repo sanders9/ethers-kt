@@ -4,8 +4,9 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.FastHex
-import java.math.BigInteger
 
 /**
  * An account override, used to override the nonce, balance, code, and storage of an account.
@@ -23,7 +24,7 @@ class AccountOverride() {
     var code: Bytes? = null
         @JvmSynthetic set
 
-    var balance: BigInteger? = null
+    var balance: BigInt? = null
         @JvmSynthetic set
 
     var state: Map<Hash, Hash>? = null
@@ -59,7 +60,7 @@ class AccountOverride() {
     /**
      * Set the balance of the account.
      * */
-    fun balance(balance: BigInteger?): AccountOverride {
+    fun balance(balance: BigInt?): AccountOverride {
         this.balance = balance
         return this
     }

@@ -4,12 +4,13 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.forEachObjectField
 import io.ethers.core.readAnyLong
 import io.ethers.core.readHexBigInteger
 import io.ethers.core.readListOf
 import io.ethers.core.readOrNull
-import java.math.BigInteger
 
 /**
  * This class represents a FeeHistory.
@@ -27,32 +28,32 @@ import java.math.BigInteger
 @JsonDeserialize(using = FeeHistoryDeserializer::class)
 data class FeeHistory(
     val oldestBlock: Long,
-    val baseFeePerGas: List<BigInteger>,
+    val baseFeePerGas: List<BigInt>,
     val gasUsedRatio: List<Double>,
-    val rewards: List<List<BigInteger>>?,
-    val baseFeePerBlobGas: List<BigInteger>?,
+    val rewards: List<List<BigInt>>?,
+    val baseFeePerBlobGas: List<BigInt>?,
     val blobGasUsedRatio: List<Double>?,
 ) {
     /**
      * Get the next base fee per gas, or ZERO for pre-EIP-1559 blocks.
      * */
-    val nextBaseFeePerGas: BigInteger
-        get() = baseFeePerGas.lastOrNull() ?: BigInteger.ZERO
+    val nextBaseFeePerGas: BigInt
+        get() = baseFeePerGas.lastOrNull() ?: BigInts.ZERO
 
     /**
      * Get the next base fee per blob gas, or ZERO for pre-EIP-4844 blocks.
      * */
-    val nextBaseFeePerBlobGas: BigInteger
-        get() = baseFeePerBlobGas?.lastOrNull() ?: BigInteger.ZERO
+    val nextBaseFeePerBlobGas: BigInt
+        get() = baseFeePerBlobGas?.lastOrNull() ?: BigInts.ZERO
 }
 
 class FeeHistoryDeserializer : JsonDeserializer<FeeHistory>() {
     override fun deserialize(p: JsonParser, ctxt: DeserializationContext): FeeHistory {
         var oldestBlock = 0L
-        var baseFeePerGas: List<BigInteger> = emptyList()
+        var baseFeePerGas: List<BigInt> = emptyList()
         var gasUsedRatio: List<Double> = emptyList()
-        var rewards: List<List<BigInteger>>? = null
-        var baseFeePerBlobGas: List<BigInteger>? = null
+        var rewards: List<List<BigInt>>? = null
+        var baseFeePerBlobGas: List<BigInt>? = null
         var blobGasUsedRatio: List<Double>? = null
 
         p.forEachObjectField { field ->

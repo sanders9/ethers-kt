@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.forEachObjectField
 import io.ethers.core.ifNotNull
 import io.ethers.core.json.JsonElement
@@ -20,7 +22,6 @@ import io.ethers.core.readOrNull
 import io.ethers.core.types.transaction.ChainId
 import io.ethers.core.types.transaction.TransactionRecovered
 import io.ethers.core.types.transaction.TxType
-import java.math.BigInteger
 
 @JsonDeserialize(using = RPCTransactionDeserializer::class)
 data class RPCTransaction(
@@ -30,30 +31,30 @@ data class RPCTransaction(
     override val hash: Hash,
     override val from: Address,
     override val to: Address?,
-    override val value: BigInteger,
+    override val value: BigInt,
     override val nonce: Long,
     override val gas: Long,
-    override val gasPrice: BigInteger,
-    override val gasFeeCap: BigInteger,
-    override val gasTipCap: BigInteger,
+    override val gasPrice: BigInt,
+    override val gasFeeCap: BigInt,
+    override val gasTipCap: BigInt,
     override val data: Bytes?,
     override val accessList: List<AccessList.Item>,
     override val authorizationList: List<Authorization>?,
     override val chainId: Long,
     override val type: TxType,
     val v: Long,
-    val r: BigInteger,
-    val s: BigInteger,
+    val r: BigInt,
+    val s: BigInt,
     val yParity: Long,
     override val blobVersionedHashes: List<Hash>?,
-    override val blobFeeCap: BigInteger?,
+    override val blobFeeCap: BigInt?,
     val otherFields: Map<String, JsonElement> = emptyMap(),
 ) : TransactionRecovered {
     /**
      * Return true if the transaction has a signature, false otherwise.
      * */
     val hasSignature: Boolean
-        get() = v != -1L && r != BigInteger.ZERO && s != BigInteger.ZERO
+        get() = v != -1L && r != BigInts.ZERO && s != BigInts.ZERO
 }
 
 private class RPCTransactionDeserializer : JsonDeserializer<RPCTransaction>() {
@@ -68,23 +69,23 @@ private class RPCTransactionDeserializer : JsonDeserializer<RPCTransaction>() {
         lateinit var hash: Hash
         lateinit var from: Address
         var to: Address? = null
-        lateinit var value: BigInteger
+        lateinit var value: BigInt
         var nonce = -1L
         var gas = -1L
-        lateinit var gasPrice: BigInteger
-        var gasFeeCap: BigInteger? = null
-        var gasTipCap: BigInteger? = null
+        lateinit var gasPrice: BigInt
+        var gasFeeCap: BigInt? = null
+        var gasTipCap: BigInt? = null
         var data: Bytes? = null
         var type = -1L
         var accessList: List<AccessList.Item> = emptyList()
         var authorizationList: List<Authorization>? = null
         var chainId: Long = ChainId.NONE
         var v = -1L
-        var r: BigInteger? = null
-        var s: BigInteger? = null
+        var r: BigInt? = null
+        var s: BigInt? = null
         var yParity = -1L
         var blobVersionedHashes: List<Hash>? = null
-        var blobFeeCap: BigInteger? = null
+        var blobFeeCap: BigInt? = null
         var otherFields: MutableMap<String, JsonElement>? = null
 
         p.forEachObjectField { field ->
@@ -140,8 +141,8 @@ private class RPCTransactionDeserializer : JsonDeserializer<RPCTransaction>() {
             chainId,
             TxType.fromType(type.toInt()),
             v,
-            r ?: BigInteger.ZERO,
-            s ?: BigInteger.ZERO,
+            r ?: BigInts.ZERO,
+            s ?: BigInts.ZERO,
             yParity,
             blobVersionedHashes,
             blobFeeCap,

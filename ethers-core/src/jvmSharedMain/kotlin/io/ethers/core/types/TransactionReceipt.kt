@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.forEachObjectField
 import io.ethers.core.json.JsonElement
 import io.ethers.core.readAddress
@@ -18,7 +20,6 @@ import io.ethers.core.readHexLong
 import io.ethers.core.readListOf
 import io.ethers.core.readOrNull
 import io.ethers.core.types.transaction.TxType
-import java.math.BigInteger
 
 /**
  * Result of transaction execution.
@@ -37,7 +38,7 @@ data class TransactionReceipt(
     val logs: List<Log>,
     val logsBloom: Bloom,
     val type: TxType,
-    val effectiveGasPrice: BigInteger,
+    val effectiveGasPrice: BigInt,
     val status: Long,
     val root: Bytes?,
     val otherFields: Map<String, JsonElement> = emptyMap(),
@@ -48,7 +49,7 @@ data class TransactionReceipt(
     /**
      * Calculate the effective gas tip (gas price minus base fee) paid by this transaction, relative to the [baseFee].
      * */
-    fun getEffectiveGasTip(baseFee: BigInteger): BigInteger {
+    fun getEffectiveGasTip(baseFee: BigInt): BigInt {
         return effectiveGasPrice - baseFee
     }
 }
@@ -71,7 +72,7 @@ private class TxReceiptDeserializer : JsonDeserializer<TransactionReceipt>() {
         var logs = emptyList<Log>()
         lateinit var logsBloom: Bloom
         var type: Int = -1
-        lateinit var effectiveGasPrice: BigInteger
+        lateinit var effectiveGasPrice: BigInt
         var status: Long = -1L
         var root: Bytes? = null
         var otherFields: MutableMap<String, JsonElement>? = null

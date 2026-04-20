@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.forEachObjectField
 import io.ethers.core.handleUnknownField
 import io.ethers.core.json.JsonElement
@@ -18,12 +20,11 @@ import io.ethers.core.readHexLong
 import io.ethers.core.readListOf
 import io.ethers.core.readListOfHashes
 import io.ethers.core.readOrNull
-import java.math.BigInteger
 
 @JsonDeserialize(using = BlockWithHashesDeserializer::class)
 data class BlockWithHashes(
-    override val baseFeePerGas: BigInteger?,
-    override val difficulty: BigInteger,
+    override val baseFeePerGas: BigInt?,
+    override val difficulty: BigInt,
     override val extraData: Bytes,
     override val gasLimit: Long,
     override val gasUsed: Long,
@@ -31,7 +32,7 @@ data class BlockWithHashes(
     override val logsBloom: Bloom,
     override val miner: Address?,
     override val mixHash: Hash?,
-    override val nonce: BigInteger?,
+    override val nonce: BigInt?,
     override val number: Long,
     override val parentHash: Hash,
     override val receiptsRoot: Hash,
@@ -39,7 +40,7 @@ data class BlockWithHashes(
     override val size: Long,
     override val stateRoot: Hash,
     override val timestamp: Long,
-    override val totalDifficulty: BigInteger,
+    override val totalDifficulty: BigInt,
     override val transactions: List<Hash>,
     override val transactionsRoot: Hash,
     override val uncles: List<Hash>,
@@ -58,8 +59,8 @@ data class BlockWithHashes(
 
 @JsonDeserialize(using = BlockWithTransactionDeserialize::class)
 data class BlockWithTransactions(
-    override val baseFeePerGas: BigInteger?,
-    override val difficulty: BigInteger,
+    override val baseFeePerGas: BigInt?,
+    override val difficulty: BigInt,
     override val extraData: Bytes,
     override val gasLimit: Long,
     override val gasUsed: Long,
@@ -67,7 +68,7 @@ data class BlockWithTransactions(
     override val logsBloom: Bloom,
     override val miner: Address?,
     override val mixHash: Hash?,
-    override val nonce: BigInteger?,
+    override val nonce: BigInt?,
     override val number: Long,
     override val parentHash: Hash,
     override val receiptsRoot: Hash,
@@ -75,7 +76,7 @@ data class BlockWithTransactions(
     override val size: Long,
     override val stateRoot: Hash,
     override val timestamp: Long,
-    override val totalDifficulty: BigInteger,
+    override val totalDifficulty: BigInt,
     override val transactions: List<RPCTransaction>,
     override val transactionsRoot: Hash,
     override val uncles: List<Hash>,
@@ -93,8 +94,8 @@ data class BlockWithTransactions(
 }
 
 interface Block<T> {
-    val baseFeePerGas: BigInteger?
-    val difficulty: BigInteger
+    val baseFeePerGas: BigInt?
+    val difficulty: BigInt
     val extraData: Bytes
     val gasLimit: Long
     val gasUsed: Long
@@ -102,7 +103,7 @@ interface Block<T> {
     val logsBloom: Bloom
     val miner: Address?
     val mixHash: Hash?
-    val nonce: BigInteger?
+    val nonce: BigInt?
     val number: Long
     val parentHash: Hash
     val receiptsRoot: Hash
@@ -110,7 +111,7 @@ interface Block<T> {
     val size: Long
     val stateRoot: Hash
     val timestamp: Long
-    val totalDifficulty: BigInteger
+    val totalDifficulty: BigInt
     val transactions: List<T>
     val transactionsRoot: Hash
     val uncles: List<Hash>
@@ -139,8 +140,8 @@ private class BlockWithHashesDeserializer : GenericBlockDeserializer<Hash, Block
     }
 
     override fun createBlock(
-        baseFeePerGas: BigInteger?,
-        difficulty: BigInteger,
+        baseFeePerGas: BigInt?,
+        difficulty: BigInt,
         extraData: Bytes,
         gasLimit: Long,
         gasUsed: Long,
@@ -148,7 +149,7 @@ private class BlockWithHashesDeserializer : GenericBlockDeserializer<Hash, Block
         logsBloom: Bloom,
         miner: Address?,
         mixHash: Hash?,
-        nonce: BigInteger?,
+        nonce: BigInt?,
         number: Long,
         parentHash: Hash,
         receiptsRoot: Hash,
@@ -156,7 +157,7 @@ private class BlockWithHashesDeserializer : GenericBlockDeserializer<Hash, Block
         size: Long,
         stateRoot: Hash,
         timestamp: Long,
-        totalDifficulty: BigInteger,
+        totalDifficulty: BigInt,
         transactions: List<Hash>,
         transactionsRoot: Hash,
         uncles: List<Hash>,
@@ -205,8 +206,8 @@ private class BlockWithTransactionDeserialize : GenericBlockDeserializer<RPCTran
     }
 
     override fun createBlock(
-        baseFeePerGas: BigInteger?,
-        difficulty: BigInteger,
+        baseFeePerGas: BigInt?,
+        difficulty: BigInt,
         extraData: Bytes,
         gasLimit: Long,
         gasUsed: Long,
@@ -214,7 +215,7 @@ private class BlockWithTransactionDeserialize : GenericBlockDeserializer<RPCTran
         logsBloom: Bloom,
         miner: Address?,
         mixHash: Hash?,
-        nonce: BigInteger?,
+        nonce: BigInt?,
         number: Long,
         parentHash: Hash,
         receiptsRoot: Hash,
@@ -222,7 +223,7 @@ private class BlockWithTransactionDeserialize : GenericBlockDeserializer<RPCTran
         size: Long,
         stateRoot: Hash,
         timestamp: Long,
-        totalDifficulty: BigInteger,
+        totalDifficulty: BigInt,
         transactions: List<RPCTransaction>,
         transactionsRoot: Hash,
         uncles: List<Hash>,
@@ -271,8 +272,8 @@ private abstract class GenericBlockDeserializer<TX, T : Block<TX>> : JsonDeseria
             throw IllegalArgumentException("Expected start object")
         }
 
-        var baseFeePerGas: BigInteger? = null
-        lateinit var difficulty: BigInteger
+        var baseFeePerGas: BigInt? = null
+        lateinit var difficulty: BigInt
         lateinit var extraData: Bytes
         var gasLimit = -1L
         var gasUsed = -1L
@@ -280,7 +281,7 @@ private abstract class GenericBlockDeserializer<TX, T : Block<TX>> : JsonDeseria
         lateinit var logsBloom: Bloom
         var miner: Address? = null
         var mixHash: Hash? = null
-        var nonce: BigInteger? = null
+        var nonce: BigInt? = null
         var number: Long = -1L
         lateinit var parentHash: Hash
         lateinit var receiptsRoot: Hash
@@ -288,7 +289,7 @@ private abstract class GenericBlockDeserializer<TX, T : Block<TX>> : JsonDeseria
         var size = -1L
         lateinit var stateRoot: Hash
         var timestamp = -1L
-        var totalDifficulty = BigInteger.ZERO
+        var totalDifficulty = BigInts.ZERO
         var transactions: List<TX>? = null
         lateinit var transactionsRoot: Hash
         var uncles: List<Hash>? = null
@@ -373,8 +374,8 @@ private abstract class GenericBlockDeserializer<TX, T : Block<TX>> : JsonDeseria
     protected abstract fun readTransactions(p: JsonParser): List<TX>
 
     protected abstract fun createBlock(
-        baseFeePerGas: BigInteger?,
-        difficulty: BigInteger,
+        baseFeePerGas: BigInt?,
+        difficulty: BigInt,
         extraData: Bytes,
         gasLimit: Long,
         gasUsed: Long,
@@ -382,7 +383,7 @@ private abstract class GenericBlockDeserializer<TX, T : Block<TX>> : JsonDeseria
         logsBloom: Bloom,
         miner: Address?,
         mixHash: Hash?,
-        nonce: BigInteger?,
+        nonce: BigInt?,
         number: Long,
         parentHash: Hash,
         receiptsRoot: Hash,
@@ -390,7 +391,7 @@ private abstract class GenericBlockDeserializer<TX, T : Block<TX>> : JsonDeseria
         size: Long,
         stateRoot: Hash,
         timestamp: Long,
-        totalDifficulty: BigInteger,
+        totalDifficulty: BigInt,
         transactions: List<TX>,
         transactionsRoot: Hash,
         uncles: List<Hash>,

@@ -1,5 +1,7 @@
 package io.ethers.core.types.transaction
 
+import io.ethers.bigint.BigInt
+import io.ethers.bigint.BigInts
 import io.ethers.core.types.AccessList
 import io.ethers.core.types.Address
 import io.ethers.core.types.Authorization
@@ -11,7 +13,6 @@ import io.ethers.rlp.RlpDecodable
 import io.ethers.rlp.RlpDecoder
 import io.ethers.rlp.RlpEncodable
 import io.ethers.rlp.RlpEncoder
-import java.math.BigInteger
 
 /**
  * An [EIP-4844](https://eips.ethereum.org/EIPS/eip-4844) blob-carrying transaction with additional
@@ -23,29 +24,29 @@ import java.math.BigInteger
  * */
 data class TxBlob(
     override val to: Address,
-    override val value: BigInteger,
+    override val value: BigInt,
     override val nonce: Long,
     override val gas: Long,
-    override val gasFeeCap: BigInteger,
-    override val gasTipCap: BigInteger,
+    override val gasFeeCap: BigInt,
+    override val gasTipCap: BigInt,
     override val data: Bytes?,
     override val chainId: Long,
     override val accessList: List<AccessList.Item>,
-    override val blobFeeCap: BigInteger,
+    override val blobFeeCap: BigInt,
     override val blobVersionedHashes: List<Hash>,
     val sidecar: Sidecar? = null,
 ) : TransactionUnsigned {
     constructor(
         to: Address,
-        value: BigInteger,
+        value: BigInt,
         nonce: Long,
         gas: Long,
-        gasFeeCap: BigInteger,
-        gasTipCap: BigInteger,
+        gasFeeCap: BigInt,
+        gasTipCap: BigInt,
         data: Bytes?,
         chainId: Long,
         accessList: List<AccessList.Item>,
-        blobFeeCap: BigInteger,
+        blobFeeCap: BigInt,
         sidecar: Sidecar,
     ) : this(
         to = to,
@@ -68,7 +69,7 @@ data class TxBlob(
         }
     }
 
-    override val gasPrice: BigInteger
+    override val gasPrice: BigInt
         get() = gasFeeCap
 
     override val type: TxType
